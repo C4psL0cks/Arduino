@@ -1,0 +1,83 @@
+#include <Adafruit_BMP280.h>
+#include <Adafruit_Sensor.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+Adafruit_BMP280 bme;
+LiquidCrystal_I2C lcd(0x27, 16, 2); //
+float num;
+float value;
+float value1;
+int count = 0;
+float number1;
+float number2;
+float sum;
+void setup()
+{
+  Serial.begin(9600);
+  if (!bme.begin())
+  {
+    Serial.println("Could not find a valid BMP280 sensor, check wiring!");
+    while (1);
+  }
+  lcd.begin();
+  lcd.home();
+}
+void loop()
+{
+
+  Serial.print("--------------------------------\n\n");
+  Serial.print("T = ");
+  Serial.print(bme.readTemperature());
+  Serial.println(" *C    ");
+  Serial.print("P = ");
+  Serial.print(bme.readPressure() / 100); // 100 Pa = 1 millibar
+  Serial.println(" mb    ");
+
+  num = bme.readPressure() / 100;
+  //Serial.print("Num :");
+  //Serial.println(num);
+
+  if (num > 1000 && count == 0) // 1 & 1 = 1
+  {
+    count += 1;  // coun = 1
+    value = num; // 1013.14 ---> value = 1013.14
+    number1 = check(value);  //check(1013.14)
+    //Serial.print("Number1 :");
+    //Serial.println(number1);
+    //Serial.print("Count1 :");
+    // Serial.println(count);
+  }
+  else if (count == 1)
+  {
+    number2 = check(value); ///check(1013.14)
+    //Serial.print("Number2 :");
+    //Serial.println(number2);
+    //Serial.print("Count2 :");
+    //Serial.println(count);
+  }
+
+  Serial.print("Approx altitude = ");
+  Serial.print(bme.readAltitude(number2));
+  Serial.println(" m");
+  Serial.print("--------------------------------\n\n");
+
+  lcd.setCursor(0, 0);
+  lcd.print("P=");
+  lcd.print(bme.readPressure() / 100); // 100 Pa = 1 millibar
+  lcd.println("mb  ");
+  lcd.setCursor(0, 1);
+  lcd.print("T=");
+  lcd.print(bme.readTemperature());
+  lcd.println("*C");
+  lcd.print(bme.readAltitude(number2));
+  lcd.println(" m ");
+  lcd.setCursor(0, 2);
+  delay(500);
+}
+float check(float value1) //check(1013.14)
+{
+  sum = value1;   //sum = 1013.14
+  return sum;    //sum = 1013.14
+}

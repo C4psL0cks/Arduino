@@ -1,0 +1,98 @@
+#include <ESP8266WiFi.h>
+
+// Config connect WiFi
+#define WIFI_SSID "zexal" //ชื่อ wifi
+#define WIFI_PASSWORD "0845755226" //รหัส wifi
+
+// Line config
+#define LINE_TOKEN "DcPJVwpIO1NRQyxUKL8DRg4p9K8bEQk1PNNsuLqZjEq" //กำหนด line
+
+#define IR_SW D7 //กำนหดค่าการใช้งาน 
+
+String msg_you_have_got_mail = "%E0%B8%84%E0%B8%B8%E0%B8%93%E0%B8%A1%E0%B8%B5%E0%B8%88%E0%B8%94%E0%B8%AB%E0%B8%A1%E0%B8%B2%E0%B8%A2"; // ข้อความเข้ารหัส แปล = คุฯได้รับจดหมาย
+String msg_pieces = "%E0%B8%89%E0%B8%9A%E0%B8%B1%E0%B8%9A"; // ฉับบ
+
+int mail_counter; // ตัวแปลนับจดหมาย
+boolean line_send = false; // กำหนดให้ เป็นผิดพลาด เพื่อค่าเริ่มต้น
+unsigned long time_ms_buffer; // กำหนดเวลาในการส่ง
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Line_Notify_Send(void) // ฟั่งชั่นส่งข้อความ
+{
+  WiFiClientSecure client;
+
+  if (!client.connect("notify-api.line.me", 443)) {
+    Serial.println("connection failed");
+    return;
+  }
+
+  String req = "";
+  req += "POST /api/notify HTTP/1.1\r\n";
+  req += "Host: notify-api.line.me\r\n";
+  req += "Authorization: Bearer " + String(LINE_TOKEN) + "\r\n";
+  req += "Cache-Control: no-cache\r\n";
+  req += "User-Agent: ESP8266\r\n";
+  req += "Content-Type: application/x-www-form-urlencoded\r\n";
+  req += "Content-Length: " + String(String("message=" + msg_you_have_got_mail + mail_counter + msg_pieces).length()) + "\r\n";
+  req += "\r\n";
+  req += "message=" + msg_you_have_got_mail + mail_counter + msg_pieces; // คุณได้รับจดหมาย X ฉบับ
+  // Serial.println(req);
+  client.print(req);
+
+  delay(20);
+  line_send = false; // ไม่ถูกส่งไปที่ line
+
+  // Serial.println("-------------");
+  while (client.connected()) {
+    String line = client.readStringUntil('\n');
+    if (line == "\r") {
+      break;
+    }
+    //Serial.println(line);
+  }
+  // Serial.println("-------------");
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void IntSwitch(void) // นับจดหมาย 
+{
+  if ((millis() - time_ms_buffer) > 1000)  // wait for 3 sec
+  {
+    mail_counter++; // นับจดหมาย 
+    line_send = true; // ถูกส่งไปที่ line
+  }
+
+  time_ms_buffer = millis();
+}
+
+void setup() // เชื่อมต่อ wifi 
+{
+  Serial.begin(115200);
+  pinMode(IR_SW, INPUT);
+  attachInterrupt(digitalPinToInterrupt(IR_SW), IntSwitch, FALLING);
+  Serial.println();
+  Serial.println();
+
+  WiFi.mode(WIFI_STA);
+  // connect to wifi.
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  Serial.print("connecting");
+
+  while (WiFi.status() != WL_CONNECTED) {
+    Serial.print(".");
+    delay(500);
+  }
+  Serial.println();
+  Serial.print("connected: ");
+  Serial.println(WiFi.localIP()); //แสดง ip 
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void loop()
+{
+  if (line_send == true)
+  +
+  delay(5);
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
