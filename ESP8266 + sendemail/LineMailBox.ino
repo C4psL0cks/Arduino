@@ -1,11 +1,11 @@
 #include <ESP8266WiFi.h>
 
 // Config connect WiFi
-#define WIFI_SSID "zexal"
-#define WIFI_PASSWORD "0845755226"
+#define WIFI_SSID "xxxxx"
+#define WIFI_PASSWORD "xxxxx"
 
 // Line config
-#define LINE_TOKEN "DcPJVwpIO1NRQyxUKL8DRg4p9K8bEQk1PNNsuLqZjEq"
+#define LINE_TOKEN "xxxxxx"
 
 #define IR_SW D7
 
