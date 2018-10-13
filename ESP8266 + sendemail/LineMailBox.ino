@@ -1,5 +1,5 @@
 #include <ESP8266WiFi.h>
-
+#include <TridentTD_LineNotify.h>
 // Config connect WiFi
 #define WIFI_SSID "xxxxx"
 #define WIFI_PASSWORD "xxxxx"
@@ -15,44 +15,6 @@ String msg_pieces = "%E0%B8%89%E0%B8%9A%E0%B8%B1%E0%B8%9A";
 int mail_counter;
 boolean line_send = false;
 unsigned long time_ms_buffer;
-
-
-void Line_Notify_Send(void)
-{
-  WiFiClientSecure client;
-
-  if (!client.connect("notify-api.line.me", 443)) {
-    Serial.println("connection failed");
-    return;
-  }
-
-  String req = "";
-  req += "POST /api/notify HTTP/1.1\r\n";
-  req += "Host: notify-api.line.me\r\n";
-  req += "Authorization: Bearer " + String(LINE_TOKEN) + "\r\n";
-  req += "Cache-Control: no-cache\r\n";
-  req += "User-Agent: ESP8266\r\n";
-  req += "Content-Type: application/x-www-form-urlencoded\r\n";
-  req += "Content-Length: " + String(String("message=" + msg_you_have_got_mail + mail_counter + msg_pieces).length()) + "\r\n";
-  req += "\r\n";
-  req += "message=" + msg_you_have_got_mail + mail_counter + msg_pieces;
-  // Serial.println(req);
-  client.print(req);
-
-  delay(20);
-  line_send = false;
-
-  // Serial.println("-------------");
-  while (client.connected()) {
-    String line = client.readStringUntil('\n');
-    if (line == "\r") {
-      break;
-    }
-    //Serial.println(line);
-  }
-  // Serial.println("-------------");
-}
-
 
 
 void IntSwitch(void)
@@ -86,11 +48,18 @@ void setup()
   Serial.println();
   Serial.print("connected: ");
   Serial.println(WiFi.localIP());
+   LINE.setToken(LINE_TOKEN);
+  Serial.println(LINE.getVersion());
 }
 
 void loop()
 {
   if (line_send == true)
-    Line_Notify_Send();
+    LINE.notify("DHT22");
+    LINE.notify(message);
+    LINE.notifySticker(3, 240);
+    LINE.notifySticker("Hello", 1, 2);
+    LINE.notifyPicture("https://xxx.jpg");
+    LINE.notifyPicture("xxxx", "https://xxx.jpg");
   delay(5);
 }
