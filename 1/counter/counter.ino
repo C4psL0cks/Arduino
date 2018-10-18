@@ -22,7 +22,7 @@ int led3 = A2;           // กำหนด ขา led3 ขา A2
 int state1 = 0, state2 = 0, state3 = 0; // กำหนด state การทำงานเอาไว้เช็คว่าถึง state ไหนแล้ว
 int Ultrasonic1, Ultrasonic2, Ultrasonic3;
 
-int counter1 = 0,                       // กำหนดตัวแปลสำหรับเอาไว้รอนับจำนวนรถเข้า - ออก
+int counter1 = 0;                       // กำหนดตัวแปลสำหรับเอาไว้รอนับจำนวนรถเข้า - ออก
 int counter2 = 3;                       // กำหนดตัวแปลสำหรับเอาไว้รอนับจำนวนที่ว่าง
 boolean send_data1 = false;             //กำหนดการเช็คก่อนส่งค่า
 boolean send_data2 = false;             //กำหนดการเช็คก่อนส่งค่า
