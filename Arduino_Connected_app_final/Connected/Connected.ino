@@ -34,7 +34,7 @@ void loop() {
   }
   if (bluetooth.available()) {
     incomingcase = bluetooth.read();
-    //Serial.println(incomingcase);
+    Serial.println(incomingcase);
     switch (incomingcase) {
       case 0:
         DAC.Set(0, 0); //0.0 v
