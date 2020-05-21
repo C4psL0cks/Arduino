@@ -5,9 +5,9 @@
     Single Digit Seven Segment LED Display
 */
 // Globals
-const int dataPin = 4;  // blue wire to 74HC595 pin 14
-const int latchPin = 7; // green to 74HC595 pin 12
-const int clockPin = 8; // yellow to 74HC595 pin 11
+const int dataPin = 8;  // blue wire to 74HC595 pin 14
+const int latchPin = 9; // green to 74HC595 pin 12
+const int clockPin = 12; // yellow to 74HC595 pin 11
 
 /* uncomment one of the following lines that describes your display
     and comment out the line that does not describe your display */
@@ -28,7 +28,7 @@ void loop() {
 
   // generate characters to display for hexidecimal numbers 0 to F
   //  for (int i = 0; i <= 15; i++) {
-  byte bits = myfnNumToBits(2) ;
+  byte bits = myfnNumToBits(5) ;
   if (decPt) {
     bits = bits | B00000001;  // add decimal point if needed
   }
