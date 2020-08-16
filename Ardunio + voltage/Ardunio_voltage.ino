@@ -7,9 +7,9 @@ float correctionfactor = 5.14;
 float vout = 0.0;
 float vin = 0.0;
 
-// two resistors 30K and 7.5k ohm
-float R1 = 4700.0;
-float R2 = 2200.0;
+// two resistors 30K = 30000 and 7.5k = 7500 ohm
+float R1 = 4700.0; //4.7 k
+float R2 = 2200.0; //2.2 k
 int value = 0;
 
 void setup() {
