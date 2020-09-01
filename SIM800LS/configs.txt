@@ -1,0 +1,39 @@
+
+AT //Once the handshake test is successful, it will back to OK
+
+AT+CMGF=1 // Configuring TEXT mode เป็นการเซ็ตการรับส่ง SMS ในแบบ Text mode
+AT+COPS? // เครือข่าย
+
+// start
+AT+CSQ // Signal quality test, value range is 0-31 , 31 is the best
+AT+CCID // Read SIM information to confirm whether the SIM is plugged
+AT+CREG?// Check whether it has registered in the network
+
+// set APN
+AT+SAPBR=3,1,"Contype","GPRS"
+AT+SAPBR=3,1,"APN","internet"
+AT+SAPBR=3,1,"USER","true"
+AT+SAPBR=3,1,"PWD","true"
+
+or
+AT+SAPBR=3,1,"Contype","GPRS"
+AT+CSTT="internet","true","true" //
+
+// get APN
+AT+CSTT? // Check APN
+AT+CFUN? // 
+AT+SAPBR=1,1 // Enable the GPRS **error
+AT+SAPBR=2,1 // Check if we already got IP Adress
+AT+HTTPINIT // Enabling HTTP mode 
+
+***AT+HTTPSSL=1 OPTIONAL, If you are using or SLL use :* error
+
+AT+HTTPPARA="CID",1 // Setting HTTP bearer profile 
+AT+HTTPPARA="URL","http://miliohm.com/miliohmSIM800L.php" // Give URL of website we want to access 
+AT+HTTPPARA="URL","http://miliohm.com/getData.php?data=12"
+AT+HTTPACTION=0 // Start HTTP GET Session 
+AT+HTTPREAD // read text in web
+AT+HTTPTERM //Terminate the session
+
+AT+CMGD=4,4
+AT+SAPBR=0,1

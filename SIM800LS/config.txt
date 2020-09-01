@@ -1,0 +1,4 @@
+
+AT //Once the handshake test is successful, it will back to OK
+AT+CMGF=1 // Configuring TEXT mode
+AT+COPS? // เครือข่าย

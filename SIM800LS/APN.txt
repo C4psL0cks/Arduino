@@ -1,0 +1,8 @@
+TRUE Move-H:
+1. Internet
+Name: TRUE-H INTERNET
+APN: internet
+Username: true
+Password: true
+MCC: 520
+MNC: 00
