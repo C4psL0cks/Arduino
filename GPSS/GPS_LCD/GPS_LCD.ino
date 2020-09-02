@@ -21,7 +21,6 @@ void setup()
   lcd.setCursor(0, 1);                      // set Cursor ให้เลื่อนไปที่ตำแหน่งที่ 2 แถวที่ 1
   lcd.print("GPS Start.....");        // เริ่มปริ้นคำว่า Hello, Welcome ตั้งแต่ ตำแหน่งที่ 2 ในแถวที่ 1 ตามที่กำหนด
   Serial.println("GPS Start");//Just show to the monitor that the sketch has started
-  Serial.println(TinyGPSPlus::libraryVersion());
 }
 
 void loop()
@@ -41,14 +40,14 @@ void loop()
     Serial.println("Altitude Feet:" + String(gps.altitude.feet()));
     Serial.println("==========================================");
 
-    lcd.setCursor(0, 0);  // clum,rows
-    lcd.print("SCount:" + String(gps.satellites.value()));
-    lcd.setCursor(0, 1);  // clum,rows
-    lcd.print("Latitude:" + String(gps.location.lat(), 5));
-    lcd.setCursor(0, 2);
-    lcd.print("Longitude:" + String(gps.location.lng(), 5));
-    lcd.setCursor(0, 3);
-    lcd.print("Speed MPH:" + String(gps.speed.mph())); //gps.speed.mph() //gps.speed.value()
-    //    delay(1000);
+    //    lcd.setCursor(0, 0);  // clum,rows
+    //    lcd.print("SCount:" + String(gps.satellites.value()));
+    //    lcd.setCursor(0, 1);  // clum,rows
+    //    lcd.print("Latitude:" + String(gps.location.lat(), 5));
+    //    lcd.setCursor(0, 2);
+    //    lcd.print("Longitude:" + String(gps.location.lng(), 5));
+    //    lcd.setCursor(0, 3);
+    //    lcd.print("Speed MPH:" + String(gps.speed.mph())); //gps.speed.mph() //gps.speed.value()
+    //    //    delay(1000);
   }
 }

@@ -1,33 +1,6 @@
-//#include <SoftwareSerial.h>
-//
-//SoftwareSerial mySerial(10, 11); // TX, RX
-//
-//void setup() {
-//  // put your setup code here, to run once:
-//  Serial.begin(9600);
-//  while(!Serial){
-//    ;
-//  }
-//  mySerial.begin(9600);
-//  Serial.println("Config....");
-//}
-//
-//void loop() {
-//  if (mySerial.available()) {
-//    Serial.write(mySerial.read());
-//  }
-//  if (Serial.available()) {
-//    mySerial.write(Serial.read());
-//  }
-//}
-
-String responseString;
-unsigned long previous=0;
-unsigned long beltTime;
 #include <SoftwareSerial.h>
-
-//Create software serial object to communicate with SIM800L
-SoftwareSerial mySerial(2, 3); //SIM800L Tx & Rx is connected to Arduino #3 & #2
+static const int SimRXPin = 3, SimTXPin = 2;
+SoftwareSerial SIM(SimTXPin, SimRXPin);
 
 void setup()
 {
@@ -35,40 +8,39 @@ void setup()
   Serial.begin(9600);
 
   //Begin serial communication with Arduino and SIM800L
-  mySerial.begin(9600);
+  SIM.begin(9600);
 
   Serial.println("Initializing...");
-  delay(1000);
+  delay(500);
 
-  mySerial.println("AT"); //Once the handshake test is successful, it will back to OK
-  updateSerial();
-  mySerial.println("AT+CSQ"); //Signal quality test, value range is 0-31 , 31 is the best
-  updateSerial();
-  mySerial.println("AT+CCID"); //Read SIM information to confirm whether the SIM is plugged
-  updateSerial();
-  mySerial.println("AT+CREG?"); //Check whether it has registered in the network
-  updateSerial();
-//  mySerial.println("AT+SAPBR=3,1,\"Contype\",\"GPRS\"");
-//  updateSerial();
-//  mySerial.println("AT+CSTT=internet,\"true\",\"true\""); //Check whether it has registered in the network
-//  updateSerial();
-//  mySerial.println("AT+CSTT?"); //Check whether it has registered in the network
-//  updateSerial();
+  SIM.println("AT"); //Once the handshake test is successful, it will back to OK
+  up();
+  SIM.println("AT+CSQ"); //Signal quality test, value range is 0-31 , 31 is the best
+  up();
+  SIM.println("AT+CCID"); //Read SIM information to confirm whether the SIM is plugged
+  up();
+  SIM.println("AT+CREG?"); //Check whether it has registered in the network
+  up();
+  //  SIM.println("AT+SAPBR=3,1,\"Contype\",\"GPRS\"");
+  //  delay(500);
+  //  SIM.println("AT+CSTT=internet,\"true\",\"true\""); //Check whether it has registered in the network
+  //  delay(500);
+  //  SIM.println("AT+CSTT?"); //Check whether it has registered in the network
+  //  delay(500);
 }
 
 void loop()
 {
-  updateSerial();
+  up();
 }
-void updateSerial()
-{
+void up() {
   delay(500);
   while (Serial.available())
   {
-    mySerial.write(Serial.read());//Forward what Serial received to Software Serial Port
+    SIM.write(Serial.read());
   }
-  while (mySerial.available())
+  while (SIM.available())
   {
-    Serial.write(mySerial.read());//Forward what Software Serial received to Serial Port
+    Serial.write(SIM.read());
   }
 }
