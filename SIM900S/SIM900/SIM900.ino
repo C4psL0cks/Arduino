@@ -1,11 +1,8 @@
 #include <SoftwareSerial.h>
-SoftwareSerial gsm(2, 3); // RX, TX
+SoftwareSerial gsm(2, 3); // TX, RX
 
 void setup() {
-  // put your setup code here, to run once:
-
   Serial.begin(9600);
-
   gsm.begin(9600);
   Serial.println("Testing GSM SIM900L");
   delay(500);
