@@ -1,19 +1,32 @@
 #include <SoftwareSerial.h>
-static const int SimRXPin = 3, SimTXPin = 2;
-SoftwareSerial SIM(SimTXPin, SimRXPin); // TX,RX
-
+//SIM800 TX is connected to Arduino D8
+#define SIM800_TX_PIN 2
+ 
+//SIM800 RX is connected to Arduino D7
+#define SIM800_RX_PIN 3
+ 
+//Create software serial object to communicate with SIM800
+SoftwareSerial serialSIM800(SIM800_TX_PIN,SIM800_RX_PIN);
+ 
 void setup() {
+  //Begin serial comunication with Arduino and Arduino IDE (Serial Monitor)
   Serial.begin(9600);
-  SIM.begin(9600);
-  Serial.println("Initializing...");
-  delay(500);
+  while(!Serial);
+   
+  //Being serial communication witj Arduino and SIM800
+  serialSIM800.begin(9600);
+  delay(1000);
+   
+  Serial.println("Setup Complete!");
 }
-
+ 
 void loop() {
-  if (Serial.available()){
-    SIM.write(Serial.read());
+  //Read SIM800 output (if available) and print it in Arduino IDE Serial Monitor
+  if(serialSIM800.available()){
+    Serial.write(serialSIM800.read());
   }
-  if (SIM.available()){
-    Serial.write(SIM.read());
+  //Read Arduino IDE Serial Monitor inputs (if available) and send them to SIM800
+  if(Serial.available()){    
+    serialSIM800.write(Serial.read());
   }
 }
