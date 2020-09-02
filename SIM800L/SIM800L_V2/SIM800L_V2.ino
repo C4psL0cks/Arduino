@@ -1,3 +1,9 @@
+/*
+  SIM800 5v/4v ↔ Arduino 5V
+  SIM800 GND (either one) ↔ Arduino GND
+  SIM800 SIM_TXD ↔ Arduino D8
+  SIM800 SIM_RXD ↔ Arduino D7
+*/
 #include <SoftwareSerial.h>
 //SIM800 TX is connected to Arduino D8
 #define SIM800_TX_PIN 2
