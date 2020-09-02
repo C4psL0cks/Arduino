@@ -1,0 +1,7 @@
+
+AT 			// Once the handshake test is successful, it will back to OK
+ATI			// Provider SIM
+AT+COPS? 		// Signal network
+AT+CSQ 			// Signal quality test, value range is 0-31 , 31 is the best
+AT+CCID 		// Read SIM information to confirm whether the SIM is plugged
+AT+CREG?		// Check whether it has registered in the network

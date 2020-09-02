@@ -1,31 +1,22 @@
-
 #include <SoftwareSerial.h>
-
-String Arsp, Grsp;
 SoftwareSerial gsm(2, 3); // RX, TX
 
 void setup() {
   // put your setup code here, to run once:
 
   Serial.begin(9600);
-  Serial.println("Testing GSM SIM800L");
+
   gsm.begin(9600);
+  Serial.println("Testing GSM SIM900L");
+  delay(500);
 
 }
-
+ 
 void loop() {
-  // put your main code here, to run repeatedly:
-
-  if (gsm.available())
-  {
-    Grsp = gsm.readString();
-    Serial.println(Grsp);
+  if (gsm.available()) {
+    Serial.write(gsm.read());
   }
-
-  if (Serial.available())
-  {
-    Arsp = Serial.readString();
-    gsm.println(Arsp);
+  if (Serial.available()) {
+    gsm.write(Serial.read());
   }
-
 }
