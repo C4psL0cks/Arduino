@@ -3,15 +3,13 @@
 #include <SoftwareSerial.h>
 #include <Wire.h>
 
-SoftwareSerial mySerial(9, 8);            // RX, TX Pins
-String apn = "apn";                       //APN
-String apn_u = "ppp";                     //APN-Username
-String apn_p = "ppp";                     //APN-Password
+SoftwareSerial mySerial(2, 3);            // RX, TX Pins
+String apn = "internet";                       //APN
+String apn_u = "true";                     //APN-Username
+String apn_p = "true";                     //APN-Password
 String url = "http://url.com/index.php";  //URL for HTTP-POST-REQUEST
 String data1;   //String for the first Paramter (e.g. Sensor1)
 String data2;   //String for the second Paramter (e.g. Sensor2)
-
-
 
 void setup() {
   // Open serial communications and wait for port to open:
@@ -23,15 +21,15 @@ void setup() {
 
 void loop() { // run over and over
 
-    data1 = "123";
-    data2 = "ABC";
-    gsm_sendhttp(); //Start the GSM-Modul and start the transmisson
-    delay(60000); //Wait one minute
+  data1 = "123";
+  data2 = "ABC";
+  gsm_sendhttp(); //Start the GSM-Modul and start the transmisson
+  delay(60000); //Wait one minute
 
 }
 
 void gsm_sendhttp() {
-  
+
   mySerial.println("AT");
   runsl();//Print GSM Status an the Serial Output;
   delay(4000);
@@ -78,7 +76,7 @@ void gsm_sendhttp() {
   runsl();
   delay(100);
   mySerial.println("AT+HTTPTERM");
-  runsl(); 
+  runsl();
 }
 
 //Print GSM Status

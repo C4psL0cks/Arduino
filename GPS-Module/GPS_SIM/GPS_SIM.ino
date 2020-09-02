@@ -49,20 +49,16 @@ TinyGPSPlus gps;
 unsigned long previous = 0;
 unsigned long beltTime;
 SoftwareSerial sim_ss(SimTXPin, SimRXPin);
-//SoftwareSerial gps_ss(GPSTXPin, GPSRXPin);
+SoftwareSerial gps_ss(GPSTXPin, GPSRXPin);
 
-void setup()
-{
+void setup() {
+
   // Initialize status pins
-  //  pinMode(ErrorPin, OUTPUT);
-  //  pinMode(SimConnectionPin, OUTPUT);
-  //  digitalWrite(ErrorPin, LOW);
-  //  digitalWrite(SimConnectionPin, LOW);
+  pinMode(ErrorPin, OUTPUT);
+  pinMode(SimConnectionPin, OUTPUT);
+  digitalWrite(ErrorPin, LOW);
+  digitalWrite(SimConnectionPin, LOW);
 
-  /*
-     Start serial communications. We can only listen to one ss at a time so changing that
-     between sim and gps as needed
-  */
   Serial.begin(SerialBaudrate);
   sim_ss.begin(SimBaudrate);
   gps_ss.begin(GPSBaud);
@@ -75,61 +71,48 @@ void setup()
 
   // Start AT communication. This sets auto baud and enables module to send data
   sim_ss.println("AT");
-  // Wait until module is connected and ready
-  waitUntilResponse("SMS Ready");
+  waitUntilResponse("OK");
   blinkLed(SimConnectionPin);
-
 
   // Full mode
   sim_ss.println("AT+CFUN=1");
-  //  waitUntilResponse("OK");
-  //  blinkLed(SimConnectionPin);
+  waitUntilResponse("OK");
+  blinkLed(SimConnectionPin);
 
-  // Set credentials (TODO username and password are not configurable from variables). This may work without CSTT and CIICR but sometimes it caused error without them even though APN is given by SAPBR
-  //  sim_ss.write("AT+CSTT=\"");
-  //  sim_ss.print(apn);
-  //  sim_ss.write("\",\"\",\"\"\r\n");
-  //  waitUntilResponse("OK");
-  //  blinkLed(SimConnectionPin);
+  //  Set credentials (TODO username and password are not configurable from variables). This may work without CSTT and CIICR but sometimes it caused error without them even though APN is given by SAPBR
+  sim_ss.write("AT+CSTT=\"");
+  sim_ss.print(apn);
+  sim_ss.write("\",\"\",\"\"\r\n");
+  waitUntilResponse("OK");
+  blinkLed(SimConnectionPin);
 
   // Connect and get IP
   sim_ss.println("AT+CIICR");
-  //  waitUntilResponse("OK");
-  //  blinkLed(SimConnectionPin);
+  waitUntilResponse("OK");
+  blinkLed(SimConnectionPin);
 
-  sim_ss.println("AT+SAPBR=3,1,\"Contype\",\"GPRS\"");
-  //  waitUntilResponse("OK");
-  //  blinkLed(SimConnectionPin);
 
-  sim_ss.println("AT+CSTT=internet,\"true\",\"true\"");
-  //  waitUntilResponse("OK");
-  //  blinkLed(SimConnectionPin);
+  //  Some more credentials
+  sim_ss.write("AT+SAPBR=3,1,\"APN\",\"");
+  sim_ss.print(apn);
+  sim_ss.write("\"\r\n");
+  waitUntilResponse("OK");
+  blinkLed(SimConnectionPin);
 
-  sim_ss.println("AT+CSTT?");
-  //  waitUntilResponse("OK");
-  //  blinkLed(SimConnectionPin);
+  sim_ss.println("AT+SAPBR=3,1,\"USER\",\"\true");
+  waitUntilResponse("OK");
+  blinkLed(SimConnectionPin);
 
-  // Some more credentials
-  //  sim_ss.write("AT+SAPBR=3,1,\"APN\",\"");
-  //  sim_ss.print(apn);
-  //  sim_ss.write("\"\r\n");
-  //  waitUntilResponse("OK");
-  //  blinkLed(SimConnectionPin);
-  //
-  //  sim_ss.println("AT+SAPBR=3,1,\"USER\",\"\"");
-  //  waitUntilResponse("OK");
-  //  blinkLed(SimConnectionPin);
-  //
-  //  sim_ss.println("AT+SAPBR=3,1,\"PWD\",\"\"");
-  //  waitUntilResponse("OK");
-  //  blinkLed(SimConnectionPin);
+  sim_ss.println("AT+SAPBR=3,1,\"PWD\",\"\true");
+  waitUntilResponse("OK");
+  blinkLed(SimConnectionPin);
 
   sim_ss.println("AT+SAPBR=1,1");
-  //  waitUntilResponse("OK");
-  //  blinkLed(SimConnectionPin);
+  waitUntilResponse("OK");
+  blinkLed(SimConnectionPin);
 
   sim_ss.println("AT+HTTPINIT");
-  //  waitUntilResponse("OK");
+  waitUntilResponse("OK");
   digitalWrite(SimConnectionPin, HIGH);
 
   gps_ss.listen();
@@ -137,37 +120,29 @@ void setup()
   Serial.println("starting loop!");
 }
 
-void blinkLed(int led)
-{
+void blinkLed(int led) {
   digitalWrite(led, HIGH);
   delay(20);
   digitalWrite(led, LOW);
 }
 
-/*
-    Read from SIM serial until we get known response. TODO error handling!
- * */
-void waitUntilResponse(String response)
-{
+void waitUntilResponse(String response) {
   beltTime = millis();
   responseString = "";
   String totalResponse = "";
-  while (responseString.indexOf(response) < 0 && millis() - beltTime < maxResponseTime)
-  {
+  while (responseString.indexOf(response) < 0 && millis() - beltTime < maxResponseTime) {
     readResponse();
     totalResponse = totalResponse + responseString;
     Serial.println(responseString);
   }
 
-  if (totalResponse.length() <= 0)
-  {
+  if (totalResponse.length() <= 0) {
     Serial.println("No response from the module. Check wiring, SIM-card and power!");
     digitalWrite(ErrorPin, HIGH);
     delay(30000);
     exit(0); // No way to recover
   }
-  else if (responseString.indexOf(response) < 0)
-  {
+  else if (responseString.indexOf(response) < 0) {
     Serial.println("Unexpected response from the module");
     Serial.println(totalResponse);
     digitalWrite(ErrorPin, HIGH);
@@ -176,11 +151,8 @@ void waitUntilResponse(String response)
   }
 }
 
-/*
-   Read from serial until we get response line ending with line separator
- * */
-void readResponse()
-{
+
+void readResponse() {
   responseString = "";
   while (responseString.length() <= 0 || !responseString.endsWith("\n"))
   {
@@ -205,8 +177,7 @@ void tryToRead()
   }
 }
 
-void loop()
-{
+void loop() {
   // If we have data, decode and log the data
   while (gps_ss.available() > 0)
     if (gps.encode(gps_ss.read())) {
@@ -221,8 +192,7 @@ void loop()
   }
 }
 
-void logInfo()
-{
+void logInfo() {
   // Causes us to wait until we have satelite fix
   if (!gps.location.isValid())
   {

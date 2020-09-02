@@ -17,22 +17,16 @@ void setup() {
   up();
   SIM.println("AT+CREG?"); //Check whether it has registered in the network
   up();
-  SIM.println("AT+CSTT?"); //Check APN
-  up();
 }
 
-void loop(){
+void loop() {
   up();
 }
 void up() {
-  
-  while (Serial.available())
-  {
+  while (Serial.available()){
     SIM.write(Serial.read());
   }
-  while (SIM.available())
-  {
+  while (SIM.available()){
     Serial.write(SIM.read());
   }
-  delay(300);
 }
