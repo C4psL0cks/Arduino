@@ -13,11 +13,10 @@ void setup() {
 }
 String message;
 void loop() {
-  
   if (receiver.available()) {
     receiver.read(); // สั่งให้เริ่มอ่าน
     receiver.rxPL(message); // สั่งใหอ่านเก็บไว้ที่ตัวแปร
-    Serial.println(message);
+    Serial.println("VR: " + String(message));
     message = "";
   }
   delay(200);
