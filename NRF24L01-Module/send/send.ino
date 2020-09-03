@@ -17,4 +17,4 @@ void loop() {
   transmitter.txPL(String(vr)); // ค่าที่ต้องการส่ง
   transmitter.send(FAST); // สั่งให้ส่งออกไป
   delay(200);
-}
+}  

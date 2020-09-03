@@ -15,6 +15,7 @@ String APN = "internet";
 String APN_USER = "true";
 String APN_PASS = "true";
 String URL = "http://miliohm.com/getData.php?data=";  //URL for HTTP-POST-REQUEST
+String URLS = "http://34.87.122.165/sims/web/call_apis.php?true=1";
 int ran;
 
 void setup() {
@@ -23,29 +24,32 @@ void setup() {
   SIM.begin(9600);
   Serial.println("Initializing...");
   delay(1000);
-  SIM.println("AT");        // Once the handshake test is successful, it will back to OK
-  delay(1000);
+  SIM.println("AT");
+  runsl();
+  delay(3000);
   SIM.println("AT+CSQ");    //Signal quality test, value range is 0-31 , 31 is the best
+  runsl();
   delay(1000);
   SIM.println("AT+CCID");   //Read SIM information to confirm whether the SIM is plugged
+  runsl();
   delay(1000);
   SIM.println("AT+CREG?");  //Check whether it has registered in the network
+  runsl();
   delay(1000);
   Serial.println("Setup Complete!");
+  delay(200);
 }
 
 void loop() {
 
   ran = random(300);
-  Serial.println(ran);
+  Serial.println("Random : " + String(ran));
   gsm_sendhttp(); //Start the GSM-Modul and start the transmisson
-  delay(30000); //Wait one minute
+  delay(10000); //Wait one minute
 }
 void gsm_sendhttp() {
-  
-  SIM.println("AT");
-  runsl();//Print GSM Status an the Serial Output;
-  delay(4000);
+
+  Serial.println("");
   SIM.println("AT+SAPBR=3,1,Contype,GPRS");
   runsl();
   delay(100);
@@ -58,9 +62,9 @@ void gsm_sendhttp() {
   SIM.println("AT+SAPBR=3,1,PWD," + APN_PASS); //Comment out, if you need password
   runsl();
   delay(100);
-  SIM.println("AT+SAPBR =1,1");
+  SIM.println("AT+SAPBR=1,1");
   runsl();
-  delay(100);
+  delay(1000);
   SIM.println("AT+SAPBR=2,1");
   runsl();
   delay(2000);
@@ -70,12 +74,12 @@ void gsm_sendhttp() {
   SIM.println("AT+HTTPPARA=CID,1");
   runsl();
   delay(100);
-  SIM.println("AT+HTTPPARA=URL," + URL + ran);
+  SIM.println("AT+HTTPPARA=URL," + URLS + "&latitude=" + ran + "&longitude=" + ran);
   runsl();
-  delay(100);
+  delay(1000);
   SIM.println("AT+HTTPACTION=0");
   runsl();
-  delay(5000);
+  delay(3000);
   SIM.println("AT+HTTPREAD");
   runsl();
   delay(100);
