@@ -6,19 +6,23 @@ GND - GND
 AT 			        // Once the handshake test is successful, it will back to OK
 ATI			        // Provider version information
 AT+COPS? 		    // Signal network
-AT+CSQ? 		    // Signal quality test, value range is 0-31 , 31 is the best
-AT+CCID 		    // Read SIM information to confirm whether the SIM is plugged
+AT+CREG?            // check if network registered
+AT+CSQ 		        // Signal quality test, value range is 0-31 , 31 is the best
+***AT+CCID 		    // Read SIM information to confirm whether the SIM is plugged
 AT+CREG?		    // Check whether it has registered in the network
-AT+CFUN=1           // full mode
+***AT+CFUN=1           // full mode
 AT+CPIN?            // get pin 
 AT+CSTT="internet","true","true" // set APN
 AT+CSTT?            // get APN
 AT+CIICR            // Start wireless connection with the GPRS. This sets up the wireless GPRS connection wiht the service provider and obtain a ip address
 AT+CIFSR            // Gets the IP address assigned to the module after successful connection with the above commands
-AT+CIPSTART="TCP","exploreembedded.com",80 // set tcp
+AT+CIPSTART="TCP","34.87.122.165",80 // set tcp
 AT+CIPSEND=5,test   // send data  then type data for send, tap CTRL+Z to send
 AT+CIPSEND=?        // check send data
 AT+CIPSTATUS?       // check status https
 AT+CIPCLOSE=id      // close
 AT+CIPSHUT=?        // The command disconnects the wireless connection, except at the status of IP INITIAL. You can close moving scene by AT+CIPSHUT. After closed, the status is IP INITIAL.
 AT+CIPSHUT          // disconnects the wireless connection.
+
+
+AT+CIICR
