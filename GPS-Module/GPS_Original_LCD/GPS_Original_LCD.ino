@@ -10,7 +10,8 @@ LiquidCrystal_I2C lcd(0x27, 20, 4); // กำหนด Address การเช�
 //  Arduino D8 ASS RX - BT TX no need voltage divider
 //  Arduino D9 ASS TX - BT TX through a voltage divider
 
-SoftwareSerial serial_connection(10, 11); //TX=pin 10, RX=pin 11
+//SoftwareSerial serial_connection(8, 9); //TX=pin 10, RX=pin 11
+SoftwareSerial serial_connection(6, 7); //TX=pin 10, RX=pin 11
 TinyGPSPlus gps;//This is the GPS object that will pretty much do all the grunt work with the NMEA data
 void setup()
 {

@@ -21,12 +21,13 @@ void setup() {
 
 void loop() {
   up();
+  delay(1000);
 }
 void up() {
-  while (Serial.available()){
+  while (Serial.available()) {
     SIM.write(Serial.read());
   }
-  while (SIM.available()){
+  while (SIM.available()) {
     Serial.write(SIM.read());
   }
 }

@@ -1,12 +1,12 @@
 #include "TinyGPS++.h"
-#include "SoftwareSerial.h"
+#include <SoftwareSerial.h>
 
 //  SoftwareSerial bt(tx_10, tx_11); // TX, RX
 //  AltSoftSerial altSerial; // 9tx 8rx
-//  Arduino D8 ASS RX - BT TX no need voltage divider 
+//  Arduino D8 ASS RX - BT TX no need voltage divider
 //  Arduino D9 ASS TX - BT TX through a voltage divider
 
-SoftwareSerial serial_connection(10, 11); //TX=pin 10, RX=pin 11
+SoftwareSerial serial_connection(8, 9); //TX=pin 10, RX=pin 11
 TinyGPSPlus gps;//This is the GPS object that will pretty much do all the grunt work with the NMEA data
 void setup()
 {
@@ -24,17 +24,24 @@ void loop()
   if (gps.location.isUpdated()) //This will pretty much be fired all the time anyway but will at least reduce it to only after a package of NMEA data comes in
   {
     //Get the latest info from the gps object which it derived from the data sent by the GPS unit
-    Serial.println("Satellite Count:");
-    Serial.println(gps.satellites.value());
-    Serial.println("Latitude:");
-    Serial.println(gps.location.lat(), 6);
-    Serial.println("Longitude:");
-    Serial.println(gps.location.lng(), 6);
-    Serial.println("Speed MPH:");
-    Serial.println(gps.speed.mph());
-    Serial.println("Altitude Feet:");
-    Serial.println(gps.altitude.feet());
-    Serial.println("");
+    //    Serial.println("Satellite Count:");
+    //    Serial.println(gps.satellites.value());
+    //    Serial.println("Latitude:");
+    //    Serial.println(gps.location.lat(), 6);
+    //    Serial.println("Longitude:");
+    //    Serial.println(gps.location.lng(), 6);
+    //    Serial.println("Speed MPH:");
+    //    Serial.println(gps.speed.mph());
+    //    Serial.println("Altitude Feet:");
+    //    Serial.println(gps.altitude.feet());
+    //    Serial.println("");
+    Serial.println("==========================================");
+    Serial.println("Satellite Count:" + String(gps.satellites.value()));
+    Serial.println("Latitude:" + String(gps.location.lat(), 6));
+    Serial.println("Longitude:" + String(gps.location.lng(), 6));
+    Serial.println("Speed MPH:" + String(gps.speed.mph()));
+    Serial.println("Altitude Feet:" + String(gps.altitude.feet()));
+    Serial.println("==========================================");
     delay(1000);
   }
 }
