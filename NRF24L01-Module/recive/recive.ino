@@ -6,8 +6,8 @@ int output_pin_zf = 4;  //ZF - Direction pwm
 int output_pin_vr = 5;  //VR - speed
 int speeds;
 int val;
-String message;
-int x;
+int vr;
+int state;
 
 void setup() {
 
@@ -28,14 +28,13 @@ void setup() {
 void loop() {
 
   if (receiver.available()) {
-    receiver.read(); // สั่งให้เริ่มอ่าน
-    receiver.rxPL(x); // สั่งใหอ่านเก็บไว้ที่ตัวแปร
-    Serial.println("VR: " + String(x));
-    speeds = map(x, 0, 1023, 0, 255); // 0-255
+    receiver.read(); 
+    receiver.rxPL(vr); 
+    receiver.rxPL(state);
+    Serial.println("VR: " + String(vr));
+    Serial.println("STATE: " + String(state));
+    speeds = map(vr, 20, 800, 0, 255); // 0-255
     analogWrite(output_pin_vr, speeds); // Send PWM signal
     Serial.println("SPEED:" + String(speeds));
-    message = "";
   }
-  delay(10);
-
 }

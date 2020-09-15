@@ -2,6 +2,7 @@
 #include <nRF24L01p.h>
 nRF24L01p transmitter(7, 8); //CSN,CE
 String message;
+int state = 1;
 
 void setup() {
 
@@ -21,6 +22,6 @@ void loop() {
   int vr = analogRead(A0);
   Serial.println("VR:" + String(vr));
   transmitter.txPL(vr); // ค่าที่ต้องการส่ง
+  transmitter.txPL(state); // ค่าที่ต้องการส่ง
   transmitter.send(FAST); // สั่งให้ส่งออกไป
-  //  delay(50);
 }
