@@ -1,0 +1,65 @@
+SIM800 5v/4v ↔ Arduino 5V
+SIM800 GND (either one) ↔ Arduino GND
+SIM800 SIM_TXD ↔ Arduino D8
+SIM800 SIM_RXD ↔ Arduino D7
+
+AT 			// Once the handshake test is successful, it will back to OK
+ATI			// Provider SIM
+AT+COPS? 		// Signal network
+AT+CSQ 			// Signal quality test, value range is 0-31 , 31 is the best
+AT+CCID 		// Read SIM information to confirm whether the SIM is plugged
+AT+CREG?		// Check whether it has registered in the network
+
+AT+CFUN=1 		// full mode
+AT+CFUN? 		//  chek full mode
+
+AT+SAPBR=3,1,"Contype","GPRS" 		// enble GPRS
+AT+CSTT="internet","true","true" 	// set APN
+AT+CSTT? 				// Check APN
+AT+SAPBR=1,1 				// Enable the GPRS **error
+AT+SAPBR=2,1 				// Check if we already got IP Adress
+AT+HTTPINIT 				// Enabling HTTP mode 
+AT+HTTPPARA="CID",1 			// Setting HTTP bearer profile 
+AT+HTTPPARA="URL","http://miliohm.com/miliohmSIM800L.php" // Give URL of website we want to access 
+AT+HTTPACTION=0 			// Start HTTP GET Session 
+AT+HTTPREAD 				// read text in web
+AT+HTTPTERM 				//Terminate the session
+
+
+AT+SAPBR=3,1,"Contype","GPRS" 		// enble GPRS
+AT+CSTT="internet","true","true" 	// set APN
+AT+CSTT? 				// Check APN
+AT+SAPBR=1,1 				// Enable the GPRS **error
+AT+SAPBR=2,1 				// Check if we already got IP Adress
+AT+HTTPINIT 				// Enabling HTTP mode 
+AT+HTTPPARA="CID",1 			// Setting HTTP bearer profile 
+AT+HTTPPARA="URL","http://miliohm.com/getData.php?data=12"
+AT+HTTPACTION=0 			// Start HTTP GET Session 
+AT+HTTPREAD 				// read text in web
+AT+HTTPTERM 				//Terminate the session
+
+
+
+// set APN
+AT+SAPBR=3,1,"Contype","GPRS"
+AT+SAPBR=3,1,"APN","internet"
+AT+SAPBR=3,1,"USER","true"
+AT+SAPBR=3,1,"PWD","true"
+
+
+
+And below is step by step AT command to use
+
+
+
+AT+SAPBR=3,1,"Contype","GPRS"
+AT+CSTT="3gprs","3gprs","3gprs"
+AT+SAPBR=1,1
+AT+SAPBR=2,1
+AT+HTTPINIT
+AT+HTTPSSL=1
+AT+HTTPPARA="CID",1
+AT+HTTPPARA="URL","https://miliohm.com/miliohmSIM800L.php"
+AT+HTTPACTION=0
+AT+HTTPREAD
+AT+HTTPTERM
