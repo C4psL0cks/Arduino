@@ -1,14 +1,5 @@
 # [Arduino](https://startbootstrap.com/template-overviews/sb-admin-2/)
 
-เกี่ยวกับ Arduino
-
-
-<!-- ## Preview -->
-<!-- 
-[![SB Admin 2 Preview](https://startbootstrap.com/assets/img/screenshots/themes/sb-admin-2.png)](https://blackrockdigital.github.io/startbootstrap-sb-admin-2/)
-
-**[Launch Live Preview](https://blackrockdigital.github.io/startbootstrap-sb-admin-2/)** -->
-
 ## Status
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/BlackrockDigital/startbootstrap-sb-admin-2/master/LICENSE)
@@ -20,47 +11,74 @@
 ## Download and Installation
 
 To begin using this template, choose one of the following options to get started:
-<!-- 
--   [Download the latest release on Start Bootstrap](https://startbootstrap.com/template-overviews/sb-admin-2/) -->
+
 -   Install via npm: `npm i `
--   Clone the repo: `git clone `
-<!-- -   [Fork, Clone, or Download on GitHub](https://github.com/BlackrockDigital/startbootstrap-sb-admin-2) -->
+-   Clone the repo: `git clone https://github.com/C4psL0cks/arduino `
 
-<!-- ## Usage
+## การใช้งานเริ่มต้น ESP8266 NodeMCU และการใช้งาน Application ต่างๆ
 
-After installation, run `npm install` and then run `npm start` which will open up a preview of the template in your default browser, watch for changes to core template files, and live reload the browser when changes are saved. You can view the `gulpfile.js` to see which tasks are included with the dev environment.
+- แหล่งรวบรวม iot และเผยแพร่ สำหรับผู้สนใจนำไปต่อยอด โดยสามารถใช้ได้กับ ESP8266 และ ESP32    
+- การใช้งาน LINE API 
+- การใช่งาน SQL 
+- การใช้งาน Firebase 
+- การใช้งาน blynk
+- การใช้งาน sensoer DHT22,BME820
+- การใช้งาน ic ขยายขา digital
 
-### Gulp Tasks
+## ปรเจคต่างๆ ที่ใช้ ESP8266 NodeMCU และการใช้งาน Application ต่างๆ
 
--   `gulp` the default task that builds everything
--   `gulp watch` browserSync opens the project in your default browser and live reloads when changes are made
--   `gulp css` compiles SCSS files into CSS and minifies the compiled CSS
--   `gulp js` minifies the themes JS file
--   `gulp vendor` copies dependencies from node_modules to the vendor directory
+- Mark ระบบ smart lock alert Startup
+- Rice ระบบวัดระดับน่ำในนาข้าว บนแอปพลิเคชัน
+- SmartCantus ระบบความคุมการเลี้ยงต้น cantus
+- Weighttacking ระบบชั่งน้ำหนักและติดตามผล บนแอปพลิเคชัน
 
-You must have npm installed globally in order to use this build environment. This theme was built using node v11.6.0 and the Gulp CLI v2.0.1. If Gulp is not running properly after running `npm install`, you may need to update node and/or the Gulp CLI locally.
+## วิธีสร้าง Line Token
 
-## Bugs and Issues
+ทำการ Log in ที่ https://notify-bot.line.me/en/
 
-Have a bug or an issue with this template? [Open a new issue](https://github.com/BlackrockDigital/startbootstrap-sb-admin-2/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/sb-admin-2/). -->
+จากนั้น เข้าไปที่ https://notify-bot.line.me/my/  เพื่อทำการ สร้าง Line Token ขึ้นมา
+ให้กดปุ่ม **Generate token**
 
-## About
+ตั้งชื่อ Token อะไรก็ได้
+พร้อมทั้งเลือก กลุ่มใน Line ที่ต้องการให้มีการแจ้งเตือนไปยังกลุ่ม
 
-Start Bootstrap is an open source library of free Bootstrap templates and themes. All of the free templates and themes on Start Bootstrap are released under the MIT license, which means you can use them for any purpose, even for commercial projects.
+## วิธีสร้าง Wifi manager ร่วมกับ blynk
 
--   Api-json	
--   Api
--   Mlab	
--   Mongodb	
--   Socketio
--   chat	
--   highchart
--   http	
--   mysql
-<!-- 
-Start Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat). -->
+เข้าไปใน Exsample wifi manager 
+ให้เพิ่มคำสั่ง blynk.config(token); เข้าไป ก็จะสามารถเชื่อมต่อกับ blynk ได้
 
-## Reference
+
+## Version
+
+
+# Reference
+
+ESP8266 Documents
+- <https://arduino-esp8266.readthedocs.io/en/latest/index.html>
+
+ESP8266
+- <https://github.com/esp8266>
+
+Firebase
+- <https://firebase-arduino.readthedocs.io/en/latest/>
+
+PHP
+- <https://www.praphas.com/forum/index.php?PHPSESSID=7b9fa1rmfb5eit80kmtkkto662&topic=327.0>
+
+PHP
+- <https://www.praphas.com/forum/index.php?board=27.0>
+
+LINE Notify
+
+- <https://notify-bot.line.me/th/>
+
+LINE richmenumaker
+
+- <https://lineforbusiness.com/richmenumaker/>
+
+LINE developers
+
+- <https://developers.line.biz/en/>
 
 Name API.com 
 -   <https://www.name.com/api-docs/>
@@ -83,6 +101,11 @@ Socket.io
 javascript.info
 -   <https://javascript.info/?fbclid=IwAR195YbvLlcZEbOXenGaOHmnOuxKuDD_N2JJAbFTmWnEmwFSVzyRiaMRT0c>
 
+
+
 ## Copyright and License
 
 Copyright 2013-2019 Blackrock Digital LLC. Code released under the [MIT](https://github.com/BlackrockDigital/startbootstrap-resume/blob/gh-pages/LICENSE) license.
+
+
+
