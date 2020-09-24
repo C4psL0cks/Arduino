@@ -1,4 +1,4 @@
-# [Arduino](https://github.com/C4psL0cks/arduino)
+# [Arduino](https://github.com/C4psL0cks/Arduino)
 
 
 ## Status
@@ -14,7 +14,7 @@
 To begin using this template, choose one of the following options to get started:
 
 -   Install via npm: `npm i `
--   Clone the repo: `git clone https://github.com/C4psL0cks/arduino `
+-   Clone the repo: `git clone https://github.com/C4psL0cks/Arduino `
 
 ## การใช้งานเริ่มต้น ESP8266 NodeMCU และการใช้งาน Application ต่างๆ
 
