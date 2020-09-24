@@ -26,13 +26,6 @@ To begin using this template, choose one of the following options to get started
 - การใช้งาน sensoer DHT22,BME820
 - การใช้งาน ic ขยายขา digital
 
-## ปรเจคต่างๆ ที่ใช้ ESP8266 NodeMCU และการใช้งาน Application ต่างๆ
-
-- Mark ระบบ smart lock alert Startup
-- Rice ระบบวัดระดับน่ำในนาข้าว บนแอปพลิเคชัน
-- SmartCantus ระบบความคุมการเลี้ยงต้น cantus
-- Weighttacking ระบบชั่งน้ำหนักและติดตามผล บนแอปพลิเคชัน
-
 ## วิธีสร้าง Line Token
 
 - ทำการ Log in ที่ https://notify-bot.line.me/en/
