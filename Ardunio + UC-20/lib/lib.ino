@@ -1,14 +1,14 @@
 #include <HardwareSerial.h>
-//#include "ESP32_UC20.h"
-//#include "internet.h"
+#include "ESP32_UC20.h"
+#include "internet.h"
 //#include "gnss.h"
 //GNSS gps;
-//INTERNET net;
+INTERNET net;
 #define APN "internet"
 #define USER "true"
 #define PASS "true"
 
-HardwareSerial MySerial(0);
+HardwareSerial MySerial(2);
 
 int START_PIN = 4;
 unsigned long previousMillis_timeout = 0;

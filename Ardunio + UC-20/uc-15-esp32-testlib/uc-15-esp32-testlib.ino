@@ -15,7 +15,7 @@
 #define OFF HIGH
 #define ON  LOW
 
-HardwareSerial gsm(0);
+HardwareSerial gsm(2);
 
 unsigned long timeGSMOn = 0;
 unsigned char flag_line_error = 1;
@@ -30,7 +30,7 @@ unsigned long previousMillis_timeout = 0;
 
 void setup() {
   Serial.begin(9600);
-  gsm.begin(9600, SERIAL_8N1, 3, 1); //3,1 rx-tx
+  gsm.begin(9600, SERIAL_8N1, 14, 12); //3,1 rx-tx
   while (!Serial) {
     ;
   }
@@ -46,12 +46,12 @@ void setup() {
 }
 void loop() {
 
-  //  if (mySerial.available()) {
-  //    Serial.write(mySerial.read());
-  //  }
-  //  if (Serial.available()) {
-  //    mySerial.write(Serial.read());
-  //  }
+    if (gsm.available()) {
+      Serial.write(gsm.read());
+    }
+    if (Serial.available()) {
+      gsm.write(Serial.read());
+    }
 }
 
 String GetOperator()
