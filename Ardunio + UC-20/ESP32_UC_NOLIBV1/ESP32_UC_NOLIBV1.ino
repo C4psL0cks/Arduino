@@ -1,11 +1,11 @@
 #include <HardwareSerial.h>
-#include "ESP32_UC20.h"
-#include "internet.h"
 
-INTERNET net;
 #define APN "internet"
 #define USER "true"
 #define PASS "true"
+
+#define simRXPIN  14
+#define simTXPIN  12
 
 HardwareSerial MySerial(2);
 
@@ -76,7 +76,7 @@ bool PowerOn() {
 
 bool WaitReady()
 {
-  //  start_time_out();
+  start_time_out();
   while (MySerial.available())
   {
     String req = MySerial.readStringUntil('\n');
@@ -85,8 +85,8 @@ bool WaitReady()
     {
       debug(F("\r\nUC20 Ready..."));
       debug(F("\r\nClose Echo"));
-      //      MySerial.print("ATE0\r");
-      //      wait_ok(10000);
+      MySerial.print("ATE0\r");
+      wait_ok(10000);
 
       return (false);
     }
@@ -96,16 +96,16 @@ bool WaitReady()
       delay(1000);
       digitalWrite(START_PIN, LOW);
       delay(1000);
-      //      PowerOn();
+      PowerOn();
     }
     else
     {
       return (true);
     }
-    //    if (time_out(30000))
-    //    {
-    //      debug(F("\r\nNo response--> Please check Hardware"));
-    //    }
+    if (time_out(30000))
+    {
+      debug(F("\r\nNo response--> Please check Hardware"));
+    }
   }
   return (true);
 }
@@ -147,13 +147,12 @@ bool wait_ok_(long time, bool ack)
 void setup() {
 
   Serial.begin(9600);
-  MySerial.begin(9600, SERIAL_8N1, 3, 1); //3,1 rx-tx
+  MySerial.begin(9600, SERIAL_8N1, simRXPIN, simTXPIN); //3,1 rx-tx
   while (WaitReady()) {}
-  String str = "ATE0";
-  MySerial.println(str);
-  wait_ok(10000);
+  Serial.println(F("Set APN and Password"));
   netConfigure(APN, USER, PASS);
   wait_ok(10000);
+  Serial.println(F("Connect net"));
   netConnect();
   wait_ok(10000);
   Serial.println("Initializing...");
@@ -179,18 +178,18 @@ bool netConfigure(String apn, String user, String password)
   str += "\"" + password + "\",";
   str += "1";
   MySerial.println(str);
-  //  return (wait_ok(10000));
+  return (wait_ok(10000));
 }
 
 bool netConnect()
 {
   String str = "AT+QIACT=1";
   MySerial.println(str);
-  //  return (wait_ok(10000));
+  return (wait_ok(10000));
 }
 
 bool DisConnect()
 {
   MySerial.println("AT+QIDEACT=1");
-  //  return (wait_ok(10000));
+  return (wait_ok(10000));
 }

@@ -24,10 +24,10 @@ HardwareSerial UART0(2); // ok rx,tx,16,17
 
 void setup() {
   Serial.begin(9600);
-  //UART0.begin(9600, SERIAL_8N1, RX2, TX2); // tx,rx -> rx,tx
-  //  UART0.begin(9600, SERIAL_8N1, RX1, TX1); // tx,rx -> rx,tx
-  //  UART0.begin(9600, SERIAL_8N1, RX2, TX2); // tx,rx -> rx,tx
-  UART0.begin(9600, SERIAL_8N1, simRXPIN, simTXPIN);
+  //UART0.begin(9600, SERIAL_8N1, RX0, TX0); // tx,rx -> rx,tx
+  //UART0.begin(9600, SERIAL_8N1, RX1, TX1); // tx,rx -> rx,tx
+  UART0.begin(9600, SERIAL_8N1, RX2, TX2); // tx,rx -> rx,tx
+  //UART0.begin(9600, SERIAL_8N1, simRXPIN, simTXPIN);
   Serial.println("START.............");
   UART0.println("AT\r");
   wait_ok(1000);

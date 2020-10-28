@@ -35,7 +35,7 @@ void setup() {
   }
   delay(2000);
   Serial.println("ESP32-UC20");
-  PowerOn();
+  //PowerOn();
   while (WaitReady()) {}
   Serial.print("GetOperator --> ");
   Serial.println(GetOperator());
@@ -62,7 +62,7 @@ String GetOperator()
   while (1)
   {
     String req = gsm.readStringUntil('\n');
-    if (req.indexOf(F("+COPS")) != -1)
+    if (req.indexOf(F("+COPS: 0,0,")) != -1)
     {
       //+COPS: 0,0,"TRUE-H",2
       /*char comma1 = req.indexOf(F(","));

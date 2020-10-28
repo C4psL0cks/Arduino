@@ -26,10 +26,9 @@ void data_out(char data)
 {
   Serial.write(data);
 }
-void setup() {
-
+void setup()
+{
   Serial.begin(9600);
-  while (!Serial) {}
   gsm.begin(&mySerial, 9600, simRXPIN, simTXPIN);
   gsm.Event_debug = debug;
   Serial.println(F("ESP32-UC20"));
@@ -39,6 +38,7 @@ void setup() {
   Serial.println(gsm.GetOperator());
   Serial.print(F("SignalQuality --> "));
   Serial.println(gsm.SignalQuality());
+
   Serial.println(F("Disconnect net"));
   net.DisConnect();
   Serial.println(F("Set APN and Password"));
@@ -49,9 +49,9 @@ void setup() {
   Serial.println(net.GetIP());
   Serial.println(F("Start HTTP"));
   http.begin(1);
-  Serial.println(F("Send HTTP POST"));
-  http.url("https://postman-echo.com/post");
-  Serial.println(http.post("foo1=bar1&foo2=bar2")); // Body Raw Data
+  Serial.println(F("Send HTTP GET"));
+  http.url("https://postman-echo.com/get?foo1=bar1&foo2=bar2");
+  Serial.println(http.get());
   Serial.println(F("Clear data in RAM"));
   file.Delete(RAM, "*");
   Serial.println(F("Save HTTP Response To RAM"));
@@ -61,13 +61,14 @@ void setup() {
   Serial.println(F("Disconnect net"));
   net.DisConnect();
 }
+
 void read_file(String pattern, String file_name)
 {
   file.DataOutput =  data_out;
   file.ReadFile(pattern, file_name);
 }
-void loop() {
-
+void loop()
+{
   while (gsm.available()) {
     Serial.write(gsm.read());
   }
