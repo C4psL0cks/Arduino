@@ -27,10 +27,9 @@ int START_PIN = 4;
 unsigned long previousMillis_timeout = 0;
 
 
-
 void setup() {
   Serial.begin(9600);
-  gsm.begin(9600, SERIAL_8N1, 14, 12); //3,1 rx-tx
+  gsm.begin(9600, SERIAL_8N1, simRXPIN, simTXPIN); //3,1 rx-tx
   while (!Serial) {
     ;
   }

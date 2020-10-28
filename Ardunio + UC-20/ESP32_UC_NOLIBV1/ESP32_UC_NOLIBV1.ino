@@ -1,8 +1,7 @@
 #include <HardwareSerial.h>
 #include "ESP32_UC20.h"
 #include "internet.h"
-//#include "gnss.h"
-//GNSS gps;
+
 INTERNET net;
 #define APN "internet"
 #define USER "true"

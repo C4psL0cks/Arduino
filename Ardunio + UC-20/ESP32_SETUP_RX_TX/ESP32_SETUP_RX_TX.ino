@@ -9,8 +9,8 @@
 #define TX0 1
 #define RX0 3
 
-#define TX1 10// 10
-#define RX1 9 // 9
+#define TX1 10
+#define RX1 9
 
 #define TX2 17
 #define RX2 16
@@ -24,9 +24,10 @@ HardwareSerial UART0(2); // ok rx,tx,16,17
 
 void setup() {
   Serial.begin(9600);
-  UART0.begin(9600, SERIAL_8N1, simRXPIN, simTXPIN); // tx,rx -> rx,tx
-  //  Serial.begin(9600);
-  //  UART0.begin(9600, SERIAL_8N1, simRXPIN, simTXPIN);
+  //UART0.begin(9600, SERIAL_8N1, RX2, TX2); // tx,rx -> rx,tx
+  //  UART0.begin(9600, SERIAL_8N1, RX1, TX1); // tx,rx -> rx,tx
+  //  UART0.begin(9600, SERIAL_8N1, RX2, TX2); // tx,rx -> rx,tx
+  UART0.begin(9600, SERIAL_8N1, simRXPIN, simTXPIN);
   Serial.println("START.............");
   UART0.println("AT\r");
   wait_ok(1000);
