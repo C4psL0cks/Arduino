@@ -1,6 +1,6 @@
-#include <AltSoftSerial.h>
-AltSoftSerial altSerial;
 
+#include <SoftwareSerial.h>
+SoftwareSerial bluetooth(9, 8);
 // ACS712 Demo Sketch
 //
 
@@ -21,8 +21,8 @@ void setup() {
 
   Serial.begin(9600);
   while (!Serial);
-  altSerial.begin(9600);
-  altSerial.println("Hello World");
+  bluetooth.begin(9600);
+  bluetooth.println("Hello World");
   Serial.println("\nConnected device ...version 1.0.0");
 }
 
@@ -33,24 +33,24 @@ void loop() {
   //  Amps = ((Voltage - OffsetVoltage) / Sens); // Convert to amps
   //
   //
-  //  Serial.print("A/D Read Value = " );  // A/D read value
-  //  Serial.print(RawValue);              //
-  //
-  //  Serial.print("\t mV = ");            // ACS712 Output voltage
-  //  Serial.print(Voltage, 3);            //
-  //
-  //  Serial.print("\t Amps = ");          // Current measured
-  //  Serial.println(Amps, 3);             //
+  Serial.print("A/D Read Value = " );  // A/D read value
+  Serial.print(RawValue);              //
+
+  Serial.print("\t mV = ");            // ACS712 Output voltage
+  Serial.print(Voltage, 3);            //
+
+  Serial.print("\t Amps = ");          // Current measured
+  Serial.println(Amps, 3);             //
 
   // Read from the Serial Monitor and send to the Bluetooth module
-  if (Serial.available()) {
-    altSerial.write(Serial.read());
-  }
-
-  // Read from the Bluetooth module and send to the Arduino Serial Monitor
-  if (altSerial.available()) {
-    Serial.write(altSerial.read());
-  }
+  //  if (Serial.available()) {
+  //    bluetooth.write(Serial.read());
+  //  }
+  //
+  //  // Read from the Bluetooth module and send to the Arduino Serial Monitor
+  //  if (bluetooth.available()) {
+  //    Serial.write(bluetooth.read());
+  //  }
 
   //send
   //  if (Serial.available()) {
@@ -58,7 +58,7 @@ void loop() {
   //    c = Serial.read();
   //    altSerial.println(c);
   //  }
-  //  altSerial.println(random(0, 100));
-  //  delay(1000);
+  bluetooth.println(random(0, 100));
+  delay(1000);
 
 }
