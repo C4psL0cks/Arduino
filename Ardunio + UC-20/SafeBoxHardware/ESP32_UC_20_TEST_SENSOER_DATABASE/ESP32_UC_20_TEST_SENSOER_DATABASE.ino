@@ -4,6 +4,7 @@
 #include "File.h"
 #include "http.h"
 #include "gnss.h"
+#include <WiFi.h>
 
 //SIM TRUE  internet
 #define APN "internet"
@@ -34,6 +35,7 @@ int water_sensor_2 = 0;
 int motion_sensor = 0;
 int car_sensor = 0;
 float temperatureC = 0;
+String mac_address = "";
 
 
 INTERNET net;
@@ -98,6 +100,9 @@ void setup()
   Serial.println(F("Start HTTP"));
   gps.Start();
   Serial.print(F("GPS Start"));
+
+  Serial.print("ESP Board MAC Address:  ");
+  Serial.println(WiFi.macAddress());
 }
 
 void read_file(String pattern, String file_name)
@@ -134,7 +139,15 @@ void loop()
     Serial.println(F("Start HTTP"));
     http.begin(1);
     Serial.println(F("Send HTTP GET"));
-    http.url("https://postman-echo.com/get?latitude=" + latitude
+    // http.url("https://postman-echo.com/get?latitude=" + latitude
+    //          + "&longitude=" + longitude
+    //          + "&water_sensor_1=" + water_sensor_1
+    //          + "&water_sensor_2=" + water_sensor_2
+    //          + "&motion_sensor=" + motion_sensor
+    //          + "&car_sensor=" + car_sensor
+    //          + "&temperatureC=" + temperatureC);
+    http.url("http://103.233.193.144:5001/get?macaddress_uaa=" mac_address
+             + "&latitude=" + latitude
              + "&longitude=" + longitude
              + "&water_sensor_1=" + water_sensor_1
              + "&water_sensor_2=" + water_sensor_2
