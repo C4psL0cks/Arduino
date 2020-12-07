@@ -12,27 +12,26 @@ String pm25_;
 String pm10_;
 String response;
 
-const char* ssid = "HOTSPOT"; //Set Wifi SSID
-const char* password = "PASSWORD_WIFI";//Set Wifi password
-WiFiClient client;
 
-void setup(){
-  
+
+void setup() {
+
   Serial.begin(9600);
   pms.passiveMode(); // Switch to passive mode
-  WiFi.begin(ssid, password);
-  WiFi.mode(WIFI_STA);
-  while (WiFi.status() != WL_CONNECTED){
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
 
   lcd.init();
   lcd.backlight();
+  // set cursor to first column, first row
+  lcd.setCursor(0, 0);
+  // print message
+  lcd.print("Hello, World!");
+  delay(1000);
+  // clears the display to print new message
+  lcd.clear();
+  // set cursor to first column, second row
+  lcd.setCursor(0, 1);
+  lcd.print("Hello, World!");
+  delay(1000);
   lcd.clear();
 
 }
