@@ -3,7 +3,7 @@
 int Vsensor = A0;
 
 //For 0-25v voltage sensor
-float correctionfactor = 5.14;
+float correctionfactor = 5.0;
 float vout = 0.0;
 float vin = 0.0;
 

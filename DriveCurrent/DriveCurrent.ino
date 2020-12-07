@@ -1,21 +1,9 @@
-
 #include <SoftwareSerial.h>
 SoftwareSerial bluetooth(9, 8);
-// ACS712 Demo Sketch
-//
+uint8_t events[] = {0, 0};
 
-// Select sensitivity for appropriate ACS712 version:
-//int Sens = 185;           // Sensitivity in mV/A for the 5A version
-//int Sens = 100;           // Sensitivity in mV/A for the 20A version
-int Sens = 66;              // Sensitivity in mV/A for the 30A version
-
-const int analogIn = A0;  // Analog input pin
-
-int OffsetVoltage = 2500; // 0 Current offset Voltage in mV @ 0 amps
-
-int RawValue = 0;         // Init result variables
-double Voltage = 0;       //
-double Amps = 0;          //
+double amps = 0.0;
+float vin = 0.0;
 
 void setup() {
 
@@ -23,42 +11,31 @@ void setup() {
   while (!Serial);
   bluetooth.begin(9600);
   bluetooth.println("Hello World");
-  Serial.println("\nConnected device ...version 1.0.0");
+  Serial.println("\nConnected ...version 1.0.0");
 }
 
 void loop() {
 
-  //  RawValue = analogRead(analogIn);           // Read voltage from ASC712
-  //  Voltage = (RawValue / 1023.0) * 5000;      // Convert to mV
-  //  Amps = ((Voltage - OffsetVoltage) / Sens); // Convert to amps
-  //
-  //
-  Serial.print("A/D Read Value = " );  // A/D read value
-  Serial.print(RawValue);              //
 
-  Serial.print("\t mV = ");            // ACS712 Output voltage
-  Serial.print(Voltage, 3);            //
+  vin = ((analogRead(A0) * 5.17) / 1024.0) / (2200.0 / (4700.0 + 2200.0));
+  Serial.println("Voltage V: " + String(vin, 2));
 
-  Serial.print("\t Amps = ");          // Current measured
-  Serial.println(Amps, 3);             //
+  if (vin < 0) {
+    vin  = 0;
+  }
 
-  // Read from the Serial Monitor and send to the Bluetooth module
-  //  if (Serial.available()) {
-  //    bluetooth.write(Serial.read());
-  //  }
-  //
-  //  // Read from the Bluetooth module and send to the Arduino Serial Monitor
-  //  if (bluetooth.available()) {
-  //    Serial.write(bluetooth.read());
-  //  }
+  amps = ((((analogRead(A1) / 1023.0) * 5000) - 2500) / 66);
 
-  //send
-  //  if (Serial.available()) {
-  //    //altSerial.write(Serial.read());
-  //    c = Serial.read();
-  //    altSerial.println(c);
-  //  }
-  bluetooth.println(random(0, 100));
-  delay(1000);
+  if (amps < 0) {
+    amps = 0;
+  }
+
+  Serial.println("Amps A :" + String(amps, 2));
+
+  events[0] = vin;
+  events[1] = amps;
+  bluetooth.write(events[0]);
+  bluetooth.write(events[1]);
+  delay(500);
 
 }
