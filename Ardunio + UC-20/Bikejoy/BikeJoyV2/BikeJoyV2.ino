@@ -110,7 +110,16 @@ void loop() {
 
       // GPS
       GPS_DATA = gps.GetPosition();
-      //      Serial.println(GPS_DATA);
+      Serial.println(GPS_DATA);
+
+      //+QGPSLOC: 112431.0,
+      //16,44.640884,N,dd.mmmmmmmm/n/s
+      //100,11.822662,E,dd.mmmmmmmm/n/s
+      //0.9,56.1,2,234.11,0.0,0.0,101220,08
+      //
+      //16.743107, dd.dddddd
+      //100.197038, dd.dddddd
+
       latitude = getValue(GPS_DATA, ',', 1);
       longitude = getValue(GPS_DATA, ',', 2);
       //      if (latitude == 0 && longitude == 0) {
