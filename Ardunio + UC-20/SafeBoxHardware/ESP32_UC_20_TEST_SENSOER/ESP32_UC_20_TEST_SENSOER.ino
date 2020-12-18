@@ -2,7 +2,7 @@
 #include <DallasTemperature.h>
 
 // GPIO where the DS18B20 is connected to
-#define oneWireBus 18
+#define oneWireBus 32//18
 #define water1 26
 #define water2 27
 #define motion 25

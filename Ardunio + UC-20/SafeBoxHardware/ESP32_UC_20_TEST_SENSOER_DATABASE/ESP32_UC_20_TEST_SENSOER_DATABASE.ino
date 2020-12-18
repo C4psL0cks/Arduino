@@ -11,8 +11,8 @@
 #define USER "true"
 #define PASS "true"
 
-#define simRXPIN  16//14
-#define simTXPIN  17//12
+#define simRXPIN  14
+#define simTXPIN  12
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -74,7 +74,7 @@ String getValue(String data, char separator, int index)
 void setup()
 {
   Serial.begin(9600);
-  sensors.begin();
+  //  sensors.begin();
   pinMode(water1, INPUT);
   pinMode(water2, INPUT);
   pinMode(motion, INPUT);
@@ -98,8 +98,8 @@ void setup()
   Serial.println(F("Show My IP"));
   Serial.println(net.GetIP());
   Serial.println(F("Start HTTP"));
-  gps.Start();
-  Serial.print(F("GPS Start"));
+  //  gps.Start();
+  //  Serial.print(F("GPS Start"));
 
   Serial.print("ESP Board MAC Address:  ");
   mac_address = WiFi.macAddress();
@@ -114,68 +114,68 @@ void read_file(String pattern, String file_name)
 void loop()
 {
 
-  if (gps.GetPosition() == "") {
-    Serial.println("Wait GPS......");
-  }
-  else {
-    String GPS_DATA = gps.GetPosition();
-    Serial.println(GPS_DATA);
-    String latitude = getValue(GPS_DATA, ',', 1 );
-    Serial.println("latitude : " + latitude);
-    String longitude = getValue(GPS_DATA, ',', 2 );
-    Serial.println("longitude : " + longitude);
-    water_sensor_1 = digitalRead(water1);
-    Serial.println("Water1:" + String(water_sensor_1));
-    water_sensor_2 = digitalRead(water2);
-    Serial.println("Water2:" + String(water_sensor_2));
-    motion_sensor = digitalRead(motion);
-    Serial.println("motion:" + String(motion_sensor));
-    car_sensor = digitalRead(car);
-    Serial.println("car:" + String(car_sensor));
-    sensors.requestTemperatures();
-    temperatureC = sensors.getTempCByIndex(0);
-    Serial.println(String(temperatureC) + "ºC");
-    Serial.println("---------------------------------------------");
-
-    Serial.println(F("Start HTTP"));
-    http.begin(1);
-    Serial.println(F("Send HTTP GET"));
-    // http.url("https://postman-echo.com/get?latitude=" + latitude
-    //          + "&longitude=" + longitude
-    //          + "&water_sensor_1=" + water_sensor_1
-    //          + "&water_sensor_2=" + water_sensor_2
-    //          + "&motion_sensor=" + motion_sensor
-    //          + "&car_sensor=" + car_sensor
-    //          + "&temperatureC=" + temperatureC);
-    http.url("http://103.233.193.144:5001/get?macaddress_uaa=" + mac_address
-             + "&latitude=" + latitude
-             + "&longitude=" + longitude
-             + "&water_sensor_1=" + water_sensor_1
-             + "&water_sensor_2=" + water_sensor_2
-             + "&motion_sensor=" + motion_sensor
-             + "&car_sensor=" + car_sensor
-             + "&temperatureC=" + temperatureC);
-    Serial.println(http.get());
-    Serial.println();
-    Serial.println(F("Clear data in RAM"));
-    file.Delete(RAM, "*");
-    Serial.println(F("Save HTTP Response To RAM"));
-    http.SaveResponseToMemory(RAM, "web.hml");
-    Serial.println(F("Read data in RAM"));
-    read_file(RAM, "web.hml");
-    Serial.println(F("Disconnect net"));
-    net.DisConnect();
-
-  }
-
-  delay(1000);
-
-  //  while (gsm.available()) {
-  //    Serial.write(gsm.read());
+  //  if (gps.GetPosition() == "") {
+  //    Serial.println("Wait GPS......");
   //  }
-  //  while (Serial.available()) {
-  //    gsm.write(Serial.read());
+  //  else {
+  //    String GPS_DATA = gps.GetPosition();
+  //    Serial.println(GPS_DATA);
+  //    String latitude = getValue(GPS_DATA, ',', 1 );
+  //    Serial.println("latitude : " + latitude);
+  //    String longitude = getValue(GPS_DATA, ',', 2 );
+  //    Serial.println("longitude : " + longitude);
+  //    water_sensor_1 = digitalRead(water1);
+  //    Serial.println("Water1:" + String(water_sensor_1));
+  //    water_sensor_2 = digitalRead(water2);
+  //    Serial.println("Water2:" + String(water_sensor_2));
+  //    motion_sensor = digitalRead(motion);
+  //    Serial.println("motion:" + String(motion_sensor));
+  //    car_sensor = digitalRead(car);
+  //    Serial.println("car:" + String(car_sensor));
+  //    sensors.requestTemperatures();
+  //    temperatureC = sensors.getTempCByIndex(0);
+  //    Serial.println(String(temperatureC) + "ºC");
+  //    Serial.println("---------------------------------------------");
+  //
+  //    Serial.println(F("Start HTTP"));
+  //    http.begin(1);
+  //    Serial.println(F("Send HTTP GET"));
+  //    // http.url("https://postman-echo.com/get?latitude=" + latitude
+  //    //          + "&longitude=" + longitude
+  //    //          + "&water_sensor_1=" + water_sensor_1
+  //    //          + "&water_sensor_2=" + water_sensor_2
+  //    //          + "&motion_sensor=" + motion_sensor
+  //    //          + "&car_sensor=" + car_sensor
+  //    //          + "&temperatureC=" + temperatureC);
+  //    http.url("http://103.233.193.144:5001/get?macaddress_uaa=" + mac_address
+  //             + "&latitude=" + latitude
+  //             + "&longitude=" + longitude
+  //             + "&water_sensor_1=" + water_sensor_1
+  //             + "&water_sensor_2=" + water_sensor_2
+  //             + "&motion_sensor=" + motion_sensor
+  //             + "&car_sensor=" + car_sensor
+  //             + "&temperatureC=" + temperatureC);
+  //    Serial.println(http.get());
+  //    Serial.println();
+  //    Serial.println(F("Clear data in RAM"));
+  //    file.Delete(RAM, "*");
+  //    Serial.println(F("Save HTTP Response To RAM"));
+  //    http.SaveResponseToMemory(RAM, "web.hml");
+  //    Serial.println(F("Read data in RAM"));
+  //    read_file(RAM, "web.hml");
+  //    Serial.println(F("Disconnect net"));
+  //    net.DisConnect();
+  //
   //  }
+  //
+  //  delay(1000);
+
+  while (gsm.available()) {
+    Serial.write(gsm.read());
+  }
+  while (Serial.available()) {
+    gsm.write(Serial.read());
+  }
 
   //  http
   //  if (gsm.available())
