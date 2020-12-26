@@ -1,41 +1,38 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-// GPIO where the DS18B20 is connected to
-#define oneWireBus 32//18
-#define water1 26
-#define water2 27
+#define oneWireBus 32
+#define water1 34
+#define water2 35
 #define motion 25
 #define car 33
-
-// Setup a oneWire instance to communicate with any OneWire devices
-OneWire oneWire(oneWireBus);
-
-// Pass our oneWire reference to Dallas Temperature sensor
-DallasTemperature sensors(&oneWire);
-
+#define buzzer 17
 int water_sensor_1 = 0;
 int water_sensor_2 = 0;
 int motion_sensor = 0;
 int car_sensor = 0;
 float temperatureC = 0;
 
+OneWire oneWire(oneWireBus);
+DallasTemperature sensors(&oneWire);
+
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
+
+  Serial.begin(115200);
   sensors.begin();
   pinMode(water1, INPUT);
   pinMode(water2, INPUT);
   pinMode(motion, INPUT);
   pinMode(car, INPUT);
+  pinMode(buzzer, OUTPUT);
+  digitalWrite(buzzer, HIGH); //close
   Serial.println("Start.....");
 
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
 
-
+  digitalWrite(buzzer, LOW); // open
   water_sensor_1 = digitalRead(water1);
   Serial.println("Water1:" + String(water_sensor_1));
   water_sensor_2 = digitalRead(water2);
@@ -48,10 +45,5 @@ void loop() {
   temperatureC = sensors.getTempCByIndex(0);
   Serial.println(String(temperatureC) + "ºC");
   Serial.println("---------------------------------------------");
-
   delay(500);
-
-
-
-
 }

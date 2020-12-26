@@ -115,7 +115,7 @@ void i2s_adc(void *arg)
   while (flash_wr_size < FLASH_RECORD_SIZE) {
     //read data from I2S bus, in this case, from ADC.
     i2s_read(I2S_PORT, (void*) i2s_read_buff, i2s_read_len, &bytes_read, portMAX_DELAY);
-    //example_disp_buf((uint8_t*) i2s_read_buff, 64);
+    // example_disp_buf((uint8_t*) i2s_read_buff, 64);
     //save original data from I2S(ADC) into flash.
     i2s_adc_data_scale(flash_write_buff, (uint8_t*)i2s_read_buff, i2s_read_len);
     file.write((const byte*) flash_write_buff, i2s_read_len);

@@ -15,19 +15,19 @@
 #define TX2 34//17
 #define RX2 35//16
 
-#define simRXPIN  14
-#define simTXPIN  12
+#define simRXPIN  27
+#define simTXPIN  26
 
 //HardwareSerial UART0(0); // not rx,tx,3,1
 //HardwareSerial UART0(1); // not rx,tx,9,10
 HardwareSerial UART0(2); // ok rx,tx,16,17
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   //UART0.begin(9600, SERIAL_8N1, RX0, TX0); // tx,rx -> rx,tx
   //UART0.begin(9600, SERIAL_8N1, RX1, TX1); // tx,rx -> rx,tx
   //  UART0.begin(9600, SERIAL_8N1, RX2, TX2); // tx,rx -> rx,tx
-  UART0.begin(9600, SERIAL_8N1, simRXPIN, simTXPIN);
+  UART0.begin(115200, SERIAL_8N1, simRXPIN, simTXPIN);
   Serial.println("START.............");
   //  UART0.println("AT\r");
   //  wait_ok(1000);

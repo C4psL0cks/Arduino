@@ -19,6 +19,7 @@
 #define water2 35
 #define motion 25
 #define car 33
+#define buzzer 17
 
 int water_sensor_1 = 0;
 int water_sensor_2 = 0;
@@ -36,17 +37,14 @@ OneWire oneWire(oneWireBus);
 DallasTemperature sensors(&oneWire);
 HardwareSerial mySerial(2);
 
-void debug(String data)
-{
+void debug(String data){
   Serial.println(data);
 }
-void data_out(char data)
-{
+void data_out(char data){
   Serial.write(data);
 }
 
-String getValue(String data, char separator, int index)
-{
+String getValue(String data, char separator, int index){
   int found = 0;
   int strIndex[] = {0, -1};
   int maxIndex = data.length() - 1;
@@ -58,12 +56,15 @@ String getValue(String data, char separator, int index)
       strIndex[1] = (i == maxIndex) ? i + 1 : i;
     }
   }
-
   return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
+void read_file(String pattern, String file_name){
+  file.DataOutput =  data_out;
+  file.ReadFile(pattern, file_name);
+}
 
-void setup()
-{
+void setup(){
+  
   Serial.begin(115200);
   gsm.begin(&mySerial, 115200, RXPIN, TXPIN);
   gsm.Event_debug = debug;
@@ -72,6 +73,9 @@ void setup()
   pinMode(water2, INPUT);
   pinMode(motion, INPUT);
   pinMode(car, INPUT);
+  pinMode(buzzer, OUTPUT);
+  digitalWrite(buzzer, HIGH); //close
+
   gsm.SetPowerKeyPin();
   Serial.println(F("ESP32-UC20"));
   gsm.PowerOn();
@@ -96,17 +100,11 @@ void setup()
   Serial.println("ESP Board MAC Address:  ");
   mac_address = WiFi.macAddress();
   Serial.println(mac_address);
-
 }
 
-void read_file(String pattern, String file_name)
-{
-  file.DataOutput =  data_out;
-  file.ReadFile(pattern, file_name);
-}
-void loop()
-{
-
+void loop(){
+  
+  digitalWrite(buzzer, LOW); // open
   String GPS_DATA = gps.GetPosition();
   Serial.println(GPS_DATA);
   String latitude = getValue(GPS_DATA, ',', 1 );
@@ -151,11 +149,9 @@ void loop()
 }
 
 void Read() {
-  
   while (gsm.available()) {
     Serial.write(gsm.read());
   }
-  
   while (Serial.available()) {
     gsm.write(Serial.read());
   }
