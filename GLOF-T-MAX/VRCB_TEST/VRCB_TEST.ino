@@ -26,36 +26,38 @@ void setup() {
 
 void loop() {
 
-  //  Serial.println(analogRead(VRCB));
-  //  SPEED = constrain(analogRead(VRCB), 0, 1024);
-  //  //  Serial.println(SPEED);
-  //  SPEED = map(SPEED, 0, 1024, 0, 255);
+  Serial.println(analogRead(VRCB));
+  SPEED = constrain(analogRead(VRCB), 0, 1024);
   //  Serial.println(SPEED);
-  //  analogWrite(PWM_SPEED, SPEED);
-
-  if (Serial.available() > 0) {
-    number = Serial.parseInt();
-    Serial.println("Select :" + String(number));
-    if (number == 1) {
-      DAC.Set(830, 0); //1.0 v
-      Serial.println("1. 1 V");
-    }
-    if (number == 2) {
-      DAC.Set(1640, 0); //2.0 v
-      Serial.println("2. 2 V");
-    }
-    if (number == 3) {
-      DAC.Set(2450, 0); //3.0 v
-      Serial.println("3. 3 V");
-    }
-    if (number == 4) {
-      DAC.Set(3290, 0); //4.0 v
-      Serial.println("4. 4 V");
-    }
-    if (number == 5) {
-      DAC.Set(4095, 4095); //5.0 v
-      Serial.println("5. 5 V");
-    }
-  }
+  SPEED = map(SPEED, 0, 1024, 0, 255);
+  Serial.println(SPEED);
+  analogWrite(PWM_SPEED, SPEED);
+  DAC.Set(map(SPEED, 0, 255, 0, 4095), 0); //1.0 v
+  
+  //
+  //  if (Serial.available() > 0) {
+  //    number = Serial.parseInt();
+  //    Serial.println("Select :" + String(number));
+  //    if (number == 1) {
+  //      DAC.Set(830, 0); //1.0 v
+  //      Serial.println("1. 1 V");
+  //    }
+  //    if (number == 2) {
+  //      DAC.Set(1640, 0); //2.0 v
+  //      Serial.println("2. 2 V");
+  //    }
+  //    if (number == 3) {
+  //      DAC.Set(2450, 0); //3.0 v
+  //      Serial.println("3. 3 V");
+  //    }
+  //    if (number == 4) {
+  //      DAC.Set(3290, 0); //4.0 v
+  //      Serial.println("4. 4 V");
+  //    }
+  //    if (number == 5) {
+  //      DAC.Set(4095, 4095); //5.0 v
+  //      Serial.println("5. 5 V");
+  //    }
+  //  }
 
 }
