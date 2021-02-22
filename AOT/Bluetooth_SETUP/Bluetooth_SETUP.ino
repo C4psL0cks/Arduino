@@ -1,6 +1,10 @@
 //HM-10 Setup
-#include <SoftwareSerial.h>
-SoftwareSerial bluetooth(2, 3); //tx,rx
+// #include <SoftwareSerial.h>
+// SoftwareSerial bluetooth(2, 3); //tx,rx
+
+#include <AltSoftSerial.h>
+AltSoftSerial bluetooth;
+
 
 void setup() {
   Serial.begin(38400);  
