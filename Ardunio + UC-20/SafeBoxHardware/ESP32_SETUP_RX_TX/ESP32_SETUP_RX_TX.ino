@@ -1,9 +1,3 @@
-/*
-  U0UXD is used to communicate with the ESP32 for programming and during reset/boot.
-  U1UXD is unused and can be used for your projects. Some boards use this port for SPI Flash access though
-  U2UXD is unused and can be used for your projects.
-*/
-
 #include <HardwareSerial.h>
 
 #define TX0 1
@@ -12,8 +6,8 @@
 #define TX1 10
 #define RX1 9
 
-#define TX2 34//17
-#define RX2 35//16
+#define TX2 17
+#define RX2 16
 
 #define simRXPIN  27
 #define simTXPIN  26
@@ -23,14 +17,14 @@
 HardwareSerial UART0(2); // ok rx,tx,16,17
 
 void setup() {
-  Serial.begin(115200);
-  //UART0.begin(9600, SERIAL_8N1, RX0, TX0); // tx,rx -> rx,tx
-  //UART0.begin(9600, SERIAL_8N1, RX1, TX1); // tx,rx -> rx,tx
-  //  UART0.begin(9600, SERIAL_8N1, RX2, TX2); // tx,rx -> rx,tx
-  UART0.begin(115200, SERIAL_8N1, simRXPIN, simTXPIN);
-  Serial.println("START.............");
-  //  UART0.println("AT\r");
-  //  wait_ok(1000);
+  //  Serial.begin(9600);
+  //  UART0.begin(9600, SERIAL_8N1, RX0, TX0); // tx,rx -> rx,tx
+  //  Serial.begin(9600);
+  //  UART0.begin(9600, SERIAL_8N1, RX1, TX1); // tx,rx -> rx,tx
+  Serial.begin(9600);
+  UART0.begin(9600, SERIAL_8N1, RX2, TX2); // tx,rx -> rx,tx
+  //  Serial.begin(115200);
+  //  UART0.begin(115200, SERIAL_8N1, simRXPIN, simTXPIN);
 }
 
 void loop() {
@@ -42,15 +36,4 @@ void loop() {
   while (Serial.available()) {
     UART0.write(Serial.read());
   }
-}
-
-void wait_ok(long time) {
-  while (UART0.available() > 0) {
-    String req = UART0.readStringUntil('\n');
-    Serial.println(req);
-    if (req.indexOf(F("OK")) != -1) {
-      Serial.println("OKKKK");
-    }
-  }
-  delay(time);
 }
