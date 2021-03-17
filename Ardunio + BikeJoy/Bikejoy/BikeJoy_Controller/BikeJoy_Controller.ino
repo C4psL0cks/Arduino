@@ -1,3 +1,5 @@
+#include <BMI160Gen.h>
+
 int Alarm = 7;  //OUTPUT
 int VR = 5;     //OUTPUT - speed
 int ZF = 9;     //OUTPUT - Direction
@@ -8,6 +10,14 @@ int Open = 3;   //INPUT
 int Accelerator = 0;      //INPUT
 unsigned long duration;   //variable
 float Speed = 0.0;        //variable
+
+float convertRawGyro(int gRaw) {
+  // since we are using 250 degrees/seconds range
+  // -250 maps to a raw value of -32768
+  // +250 maps to a raw value of 32767
+  float g = (gRaw * 250.0) / 32768.0;
+  return g;
+}
 
 void setup() {
 
@@ -22,11 +32,38 @@ void setup() {
   pinMode(ZF, OUTPUT);
   pinMode(EL, OUTPUT);
 
+  // initialize device
+  Serial.println("Initializing IMU device...");
+  BMI160.begin(BMI160GenClass::I2C_MODE);
+  uint8_t dev_id = BMI160.getDeviceID();
+  Serial.print("DEVICE ID: ");
+  Serial.println(dev_id, HEX);
+  BMI160.setGyroRange(250);
+  Serial.println("Initializing IMU device...done.");
+
 }
 
 void loop() {
 
   Serial.println("STETE:" + String(digitalRead(Open)));
+
+  int gxRaw, gyRaw, gzRaw;
+  float gx, gy, gz;
+
+  BMI160.readGyro(gxRaw, gyRaw, gzRaw);
+
+  gx = convertRawGyro(gxRaw);
+  gy = convertRawGyro(gyRaw);
+  gz = convertRawGyro(gzRaw);
+
+  Serial.print("g:\t");
+  Serial.print(gx);
+  //  Serial.print("\t");
+  //  Serial.print(gy);
+  //  Serial.print("\t");
+  //  Serial.print(gz);
+  //  Serial.println();
+
 
   // case open controller unlock
   if (digitalRead(Open) == HIGH) {
@@ -60,11 +97,11 @@ void loop() {
   else if (digitalRead(Open) == LOW) {
     digitalWrite(EL, LOW);
     analogWrite(VR, 0);
-    if (digitalRead(HDX2) == HIGH) {
+    if (gx > 2.0) {
       digitalWrite(Alarm, HIGH);
       delay(3000);
     }
-    else if (digitalRead(HDX2) == LOW) {
+    else if (gx < 0) {
       digitalWrite(Alarm, LOW);
     }
   }
