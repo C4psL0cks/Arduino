@@ -16,6 +16,7 @@
 #define LEDSTATE          6
 #define TEMP              5
 
+// value
 INTERNET net;
 FIREBASE firebase;
 GNSS gps;
