@@ -21,7 +21,7 @@ float convertRawGyro(int gRaw) {
 
 void setup() {
 
-  Serial.begin(115200);
+  Serial.begin(9600);
   pinMode(Signal, INPUT);
   pinMode(HDX2, INPUT);
   pinMode(Open, INPUT);
@@ -64,7 +64,6 @@ void loop() {
   //  Serial.print(gz);
   //  Serial.println();
 
-
   // case open controller unlock
   if (digitalRead(Open) == HIGH) {
 
@@ -77,6 +76,7 @@ void loop() {
     Accelerator = map(Accelerator, 190, 850, 0, 255);
 
     Serial.println("duration: " + String(duration));
+    Serial.println("Accelerator: " + String(Accelerator));
 
     if (duration <= 0) {
       Speed = 0;
