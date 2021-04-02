@@ -9,35 +9,31 @@
 
 #define FIREBASE_URL      "bikejoys-783e6.firebaseio.com"
 #define FIREBASE_SECRET   "jKkBKcjnPsftozmjZfqvFzbhu9GDrXJWq5pwG6uk"
-#define APN               "internet"
-#define USER              "true"
-#define PASS              "true"
-#define UNLOCK            3
-#define LEDSTATE          6
-#define TEMP              5
-
+#define APN "internet"
+#define USER "true"
+#define PASS "true"
+#define UNLOCK 3
+#define LEDSTATE 6
+#define oneWireBus 5
 
 AltSoftSerial mySerial;
-OneWire oneWire(TEMP);
+OneWire oneWire(oneWireBus);
 DallasTemperature sensors(&oneWire);
-
 INTERNET net;
 FIREBASE firebase;
 GNSS gps;
 
-
-unsigned long previousMillis1 = 0;
-unsigned long previousMillis2 = 0;
-unsigned long previousMillis3 = 0;
-unsigned long previousMillis4 = 0;
-
-const long interval = 500;
-
-boolean Status = false, state = false;
-String statuslock = "false";
-
-int value = 0, battery = 0;
-float correctionfactor = 6.5, vout = 0.0, vin = 0.0, R1 = 4700.0, R2 = 2200.0;
+unsigned long previousMillis = 0;
+const long interval = 1000; //2000
+boolean Status = false;
+boolean state = false;
+int value = 0;
+int battery = 0;
+float correctionfactor = 6.5;
+float vout = 0.0;
+float vin = 0.0;
+float R1 = 4700.0; //4.7 k
+float R2 = 2200.0; //2.2 k
 
 String getValue(String data, char separator, int index) {
   int found = 0;
@@ -52,12 +48,11 @@ String getValue(String data, char separator, int index) {
   }
   return found > index ? data.substring(strIndex[0], strIndex[1]) : "";
 }
-
 void debug(String data) {
   Serial.println(data);
 }
-
 void setup() {
+
   Serial.begin(9600);
   pinMode(UNLOCK, OUTPUT);
   pinMode(LEDSTATE, OUTPUT);
@@ -78,19 +73,14 @@ void setup() {
   net.Connect();
   Serial.println(F("Show My IP"));
   Serial.println(net.GetIP());
-  delay(100);
-  firebase.begin(FIREBASE_URL, FIREBASE_SECRET);
-
   gps.Start();
   Serial.println(F("GPS Start"));
+  delay(100);
+  firebase.begin(FIREBASE_URL, FIREBASE_SECRET);
+  previousMillis = millis();
 
-  previousMillis1 = millis();
-  previousMillis2 = millis();
-  previousMillis3 = millis();
-  previousMillis4 = millis();
 }
 void loop() {
-
 
   sensors.requestTemperatures();
   float temperature = sensors.getTempCByIndex(0);
@@ -104,37 +94,40 @@ void loop() {
   //  Serial.println("V:" + String(vin, 2));
   //  Serial.println("battery:" + String(battery));
 
+  //  int speeds = random(0, 100);
   String GPS_DATA = gps.GetPosition();
   String latitude = getValue(GPS_DATA, ',', 1);
   String longitude = getValue(GPS_DATA, ',', 2);
 
-  //      Serial.println("latitude:" + String(latitude));
-  //      Serial.println("longitude:" + String(longitude));
-
   if (latitude == "" && longitude == "") {
     Serial.println("GPS Wait.....");
   } else {
-
-    unsigned long currentMillis1 = millis();
-    if (currentMillis1 - previousMillis1 >= interval) {
-
+    unsigned long currentMillis = millis();
+    if (currentMillis - previousMillis >= interval) {
+      
+      // Serial.println(GPS_DATA);
+      // Serial.println("latitude : " + String(latitude));
+      // Serial.println("longitude : " + String(longitude));
+      // int ret = firebase.connect();
+      
       if (int(firebase.connect()) == 1) {
-        statuslock = firebase.get("bike/device2/status");
-        //        Serial.println(statuslock);
-      }
-      firebase.close();
-      previousMillis1 = currentMillis1;
-    }
-
-    unsigned long currentMillis2 = millis();
-    if (currentMillis2 - previousMillis2 >= interval) {
-
-      if (int(firebase.connect()) == 1) {
-        if (statuslock == "true") {
+        
+        //  Serial.println("battery : " + String(battery));
+        //  Serial.println("battery V :" + String(vin, 2));
+        //  Serial.println("temperature : " + String(temperature));
+        //  Serial.println("latitude : " + String(latitude));
+        //  Serial.println("longitude : " + String(longitude));
+        
+        //  String x = firebase.get("bike/device2/status");
+        //  Serial.println(x);
+        
+        if (String(firebase.get("bike/device2/status")) == "true") {
+          firebase.setFloat("bike/device2/battery", 100);
+          firebase.setFloat("bike/device2/temperature", temperature);
           firebase.setStr("bike/device2/location/latitude", latitude);
-          delay(100);
           firebase.setStr("bike/device2/location/longitude", longitude);
-          delay(100);
+          // firebase.setInt("bike/device2/speed", speeds);
+          
           state = true;
         }
         else {
@@ -142,36 +135,9 @@ void loop() {
         }
       }
       firebase.close();
-      previousMillis2 = currentMillis2;
-    }
-
-    unsigned long currentMillis3 = millis();
-    if (currentMillis3 - previousMillis3 >= interval) {
-
-      if (int(firebase.connect()) == 1) {
-        if (statuslock == "true") {
-          firebase.setInt("bike/device2/battery", battery);
-          delay(100);
-        }
-      }
-      firebase.close();
-      previousMillis3 = currentMillis3;
-    }
-
-    unsigned long currentMillis4 = millis();
-    if (currentMillis4 - previousMillis4 >= interval) {
-
-      if (int(firebase.connect()) == 1) {
-        if (statuslock == "true") {
-          firebase.setFloat("bike/device2/temperature", temperature);
-          delay(100);
-        }
-      }
-      firebase.close();
-      previousMillis4 = currentMillis4;
+      previousMillis = currentMillis;
     }
   }
-
   if (state) {
     Serial.println("No Alert");
     digitalWrite(UNLOCK, HIGH);
