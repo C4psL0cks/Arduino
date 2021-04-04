@@ -16,7 +16,6 @@
 #define LEDSTATE          6
 #define TEMP              5
 
-
 AltSoftSerial mySerial;
 OneWire oneWire(TEMP);
 DallasTemperature sensors(&oneWire);
@@ -24,7 +23,6 @@ DallasTemperature sensors(&oneWire);
 INTERNET net;
 FIREBASE firebase;
 GNSS gps;
-
 
 unsigned long previousMillis1 = 0;
 unsigned long previousMillis2 = 0;
@@ -97,7 +95,9 @@ void loop() {
 
   sensors.requestTemperatures();
   float temperature = sensors.getTempCByIndex(0);
+  
   //  Serial.println("temperature : " + String(temperature));
+  
   if (temperature < 0) {
     temperature = 0;
   }
@@ -107,6 +107,7 @@ void loop() {
   vin = vout / (R2 / (R1 + R2));
   vin = correctionfactor - vin;
   battery = map(vin, 3.2, vin, 0, 100);
+  
   //  Serial.println("V:" + String(vin, 2));
   //  Serial.println("battery:" + String(battery));
 
@@ -114,8 +115,8 @@ void loop() {
   String latitude = getValue(GPS_DATA, ',', 1);
   String longitude = getValue(GPS_DATA, ',', 2);
 
-  //      Serial.println("latitude:" + String(latitude));
-  //      Serial.println("longitude:" + String(longitude));
+  //  Serial.println("latitude:" + String(latitude));
+  //  Serial.println("longitude:" + String(longitude));
 
   if (latitude == "" && longitude == "") {
     Serial.println("GPS Wait.....");

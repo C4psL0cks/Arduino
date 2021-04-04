@@ -9,32 +9,30 @@
 
 #define FIREBASE_URL      "bikejoys-783e6.firebaseio.com"
 #define FIREBASE_SECRET   "jKkBKcjnPsftozmjZfqvFzbhu9GDrXJWq5pwG6uk"
-#define APN "internet"
-#define USER "true"
-#define PASS "true"
-#define UNLOCK 3
-#define LEDSTATE 6
-#define oneWireBus 5
+#define APN               "internet"
+#define USER              "true"
+#define PASS              "true"
+#define UNLOCK            3
+#define LEDSTATE          6
+#define TEMP              5
 
 AltSoftSerial mySerial;
 OneWire oneWire(oneWireBus);
 DallasTemperature sensors(&oneWire);
+
 INTERNET net;
 FIREBASE firebase;
 GNSS gps;
 
 unsigned long previousMillis = 0;
 const long interval = 1000; //2000
-boolean Status = false;
-boolean state = false;
-int value = 0;
-int battery = 0;
-float correctionfactor = 6.5;
-float vout = 0.0;
-float vin = 0.0;
-float R1 = 4700.0; //4.7 k
-float R2 = 2200.0; //2.2 k
+
+boolean Status = false, state = false;
+String statuslock = "false";
+
 String device = "device1";
+int value = 0, battery = 0;
+float correctionfactor = 6.5, vout = 0.0, vin = 0.0, R1 = 4700.0, R2 = 2200.0;
 
 String getValue(String data, char separator, int index) {
   int found = 0;
