@@ -36,6 +36,7 @@ const long interval = 500;
 boolean Status = false, state = false;
 String statuslock = "false";
 
+String device = "device1";
 int value = 0, battery = 0;
 float correctionfactor = 6.5, vout = 0.0, vin = 0.0, R1 = 4700.0, R2 = 2200.0;
 
@@ -95,6 +96,9 @@ void loop() {
   sensors.requestTemperatures();
   float temperature = sensors.getTempCByIndex(0);
   //  Serial.println("temperature : " + String(temperature));
+  if (temperature < 0) {
+    temperature = 0;
+  }
 
   value = analogRead(A0);
   vout = (value * correctionfactor) / 1024.0;
@@ -119,8 +123,8 @@ void loop() {
     if (currentMillis1 - previousMillis1 >= interval) {
 
       if (int(firebase.connect()) == 1) {
-        statuslock = firebase.get("bike/device2/status");
-        //        Serial.println(statuslock);
+        statuslock = firebase.get("bike/" + device + "/status");
+        delay(100);
       }
       firebase.close();
       previousMillis1 = currentMillis1;
@@ -131,13 +135,12 @@ void loop() {
 
       if (int(firebase.connect()) == 1) {
         if (statuslock == "true") {
-          firebase.setStr("bike/device2/location/latitude", latitude);
+          firebase.setStr("bike/" + device + "/location/latitude", latitude);
           delay(100);
-          firebase.setStr("bike/device2/location/longitude", longitude);
+          firebase.setStr("bike/" + device + "/location/longitude", longitude);
           delay(100);
           state = true;
-        }
-        else {
+        } else {
           state = false;
         }
       }
@@ -150,7 +153,7 @@ void loop() {
 
       if (int(firebase.connect()) == 1) {
         if (statuslock == "true") {
-          firebase.setInt("bike/device2/battery", battery);
+          firebase.setInt("bike/" + device + "/battery", battery);
           delay(100);
         }
       }
@@ -163,7 +166,7 @@ void loop() {
 
       if (int(firebase.connect()) == 1) {
         if (statuslock == "true") {
-          firebase.setFloat("bike/device2/temperature", temperature);
+          firebase.setFloat("bike/" + device + "/temperature", temperature);
           delay(100);
         }
       }
