@@ -3,7 +3,7 @@
 int Alarm = 7;  //OUTPUT
 int VR = 5;     //OUTPUT - speed
 int ZF = 9;     //OUTPUT - Direction
-int EL = 8;     //OUTPUT - Start_Stop
+//int EL = 8;     //OUTPUT - Start_Stop
 int Signal = 6; //INPUT - Hall sensor
 int HDX2 = 4;   //INPUT
 int Open = 3;   //INPUT
@@ -30,22 +30,22 @@ void setup() {
   pinMode(Alarm, OUTPUT);
   pinMode(VR, OUTPUT);
   pinMode(ZF, OUTPUT);
-  pinMode(EL, OUTPUT);
+  //  pinMode(EL, OUTPUT);
 
   // initialize device
-  Serial.println("Initializing IMU device...");
+  //  Serial.println("Initializing IMU device...");
   BMI160.begin(BMI160GenClass::I2C_MODE);
   uint8_t dev_id = BMI160.getDeviceID();
-  Serial.print("DEVICE ID: ");
-  Serial.println(dev_id, HEX);
+  //  Serial.print("DEVICE ID: ");
+  //  Serial.println(dev_id, HEX);
   BMI160.setGyroRange(250);
-  Serial.println("Initializing IMU device...done.");
+  //  Serial.println("Initializing IMU device...done.");
 
 }
 
 void loop() {
 
-  Serial.println("STETE:" + String(digitalRead(Open)));
+  //  Serial.println("STETE:" + String(digitalRead(Open)));
 
   int gxRaw, gyRaw, gzRaw;
   float gx, gy, gz;
@@ -56,8 +56,8 @@ void loop() {
   gy = convertRawGyro(gyRaw);
   gz = convertRawGyro(gzRaw);
 
-  Serial.print("g:\t");
-  Serial.print(gx);
+  //  Serial.print("g:\t");
+  //  Serial.print(gx);
   //  Serial.print("\t");
   //  Serial.print(gy);
   //  Serial.print("\t");
@@ -67,7 +67,7 @@ void loop() {
   // case open controller unlock
   if (digitalRead(Open) == HIGH) {
 
-    digitalWrite(EL, HIGH); // open
+    //    digitalWrite(EL, HIGH); // open
     digitalWrite(ZF, LOW);
     digitalWrite(Alarm, LOW);
     duration = pulseIn(Signal, HIGH);
@@ -75,19 +75,19 @@ void loop() {
     Accelerator = constrain(Accelerator, 190 , 850);
     Accelerator = map(Accelerator, 190, 850, 0, 255);
 
-    Serial.println("duration: " + String(duration));
-    Serial.println("Accelerator: " + String(Accelerator));
+    //    Serial.println("duration: " + String(duration));
+    //    Serial.println("Accelerator: " + String(Accelerator));
 
     if (duration <= 0) {
       Speed = 0;
       analogWrite(VR, 0);
     }
-    else if (duration > 0 && duration < 8000) {
+    else if (duration > 0 && duration < 3000) {
       Speed = 1000000 / duration;
       Speed = Speed * 0.0132; //km/hr ค่าจริง 0.0151
       analogWrite(VR, Accelerator);
-      Serial.println("Speed: " + String(Speed));
-      Serial.println("Accelerator: " + String(Accelerator));
+      //      Serial.println("Speed: " + String(Speed));
+      //      Serial.println("Accelerator: " + String(Accelerator));
     }
     else {
       analogWrite(VR, 0);
@@ -95,7 +95,7 @@ void loop() {
   }
   //  case close controller lock
   else if (digitalRead(Open) == LOW) {
-    digitalWrite(EL, LOW);
+    //    digitalWrite(EL, LOW);
     analogWrite(VR, 0);
     if (gx > 2.0) {
       digitalWrite(Alarm, HIGH);

@@ -15,9 +15,10 @@
 #define UNLOCK            3
 #define LEDSTATE          6
 #define TEMP              5
+#define GPS_STATUS        12
 
 AltSoftSerial mySerial;
-OneWire oneWire(oneWireBus);
+OneWire oneWire(TEMP);
 DallasTemperature sensors(&oneWire);
 
 INTERNET net;
@@ -28,7 +29,7 @@ unsigned long previousMillis = 0;
 const long interval = 1000; //2000
 
 boolean Status = false, state = false;
-String statuslock = "false";
+String statuslock = "";
 
 String device = "device1";
 int value = 0, battery = 0;
@@ -55,6 +56,8 @@ void setup() {
   Serial.begin(9600);
   pinMode(UNLOCK, OUTPUT);
   pinMode(LEDSTATE, OUTPUT);
+  pinMode(GPS_STATUS, OUTPUT);
+  digitalWrite(GPS_STATUS, LOW);
   gsm.begin(&mySerial, 9600);
   gsm.Event_debug = debug;
   Serial.println(F("UC20"));
@@ -83,18 +86,18 @@ void loop() {
 
   sensors.requestTemperatures();
   float temperature = sensors.getTempCByIndex(0);
-  //  Serial.println("temperature : " + String(temperature));
   if (temperature < 0) {
     temperature = 0;
   }
+  Serial.println("temperature : " + String(temperature));
 
   value = analogRead(A0);
   vout = (value * correctionfactor) / 1024.0;
   vin = vout / (R2 / (R1 + R2));
   vin = correctionfactor - vin;
   battery = map(vin, 3.2, vin, 0, 100);
-  //  Serial.println("V:" + String(vin, 2));
-  //  Serial.println("battery:" + String(battery));
+  Serial.println("V:" + String(vin, 2));
+  Serial.println("battery:" + String(battery));
 
   String GPS_DATA = gps.GetPosition();
   String latitude = getValue(GPS_DATA, ',', 1);
@@ -102,38 +105,41 @@ void loop() {
 
   if (latitude == "" && longitude == "") {
     Serial.println("GPS Wait.....");
+    digitalWrite(GPS_STATUS, HIGH);
   } else {
+    digitalWrite(GPS_STATUS, LOW);
     unsigned long currentMillis = millis();
-    if (currentMillis - previousMillis >= interval) {
+    if (currentMillis - previousMillis >= 60 * 50) {
 
-      // Serial.println(GPS_DATA);
-      // Serial.println("latitude : " + String(latitude));
-      // Serial.println("longitude : " + String(longitude));
+//      Serial.println(GPS_DATA);
+//      Serial.println("latitude : " + String(latitude));
+//      Serial.println("longitude : " + String(longitude));
 
       if (int(firebase.connect()) == 1) {
-        if (String(firebase.get("bike/" + device + "/status")) == "true") {
+        statuslock = firebase.get("bike/" + device + "/status");
+        //        Serial.println(statuslock);
+        if (statuslock == "true") {
           firebase.setFloat("bike/" + device + "/battery", battery);
+          delay(100);
           firebase.setFloat("bike/" + device + "/temperature", temperature);
+          delay(100);
           firebase.setStr("bike/" + device + "/location/latitude", latitude);
           firebase.setStr("bike/" + device + "/location/longitude", longitude);
-          state = true;
-        }
-        else {
-          state = false;
+          delay(100);
         }
       }
       firebase.close();
       previousMillis = currentMillis;
     }
   }
-  if (state) {
+  if (statuslock == "true") {
     Serial.println("No Alert");
     digitalWrite(UNLOCK, HIGH);
     digitalWrite(LEDSTATE, HIGH);
-  } else {
+  } else if (statuslock == "false") {
     Serial.println("Alert");
     digitalWrite(UNLOCK, LOW);
     digitalWrite(LEDSTATE, LOW);
   }
-  delay(500);
+  delay(200);
 }
