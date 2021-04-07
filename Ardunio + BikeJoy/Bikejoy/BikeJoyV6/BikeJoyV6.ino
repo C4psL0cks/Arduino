@@ -156,7 +156,7 @@ void loop() {
     if (runs == true && around_state == false) {
       around_state = true;
       unsigned long currentMillis1 = millis();
-      if (currentMillis1 - previousMillis1 >= 60 * interval) {
+      if (currentMillis1 - previousMillis1 >= 60 * setinterval) {
         if (int(firebase.connect()) == 1) {
           states = firebase.get("bike/" + device + "/status/");
           delay(100);
@@ -170,7 +170,7 @@ void loop() {
     if (states == "true" && around_state == false) {
       around_state = true;
       unsigned long currentMillis2 = millis();
-      if (currentMillis2 - previousMillis2 >= 60 * interval) {
+      if (currentMillis2 - previousMillis2 >= 60 * setinterval) {
         if (int(firebase.connect()) == 1) {
           firebase.setStr("bike/" + device + "/location/latitude", latitude);
           firebase.setStr("bike/" + device + "/location/longitude", longitude);
@@ -187,7 +187,7 @@ void loop() {
 
     if (states == "true" && around_state == false) {
       unsigned long currentMillis3 = millis();
-      if (currentMillis3 - previousMillis3 >= 60 * interval) {
+      if (currentMillis3 - previousMillis3 >= 60 * setinterval) {
         if (int(firebase.connect()) == 1) {
           sos = firebase.get("bike/" + device + "/sos/");
           delay(100);
