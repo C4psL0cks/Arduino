@@ -86,12 +86,9 @@ void loop() {
 
   sensors.requestTemperatures();
   float temperature = sensors.getTempCByIndex(0);
-<<<<<<< HEAD
-=======
   
   //  Serial.println("temperature : " + String(temperature));
   
->>>>>>> 1aff345dbef6d03a4d8c792ed1734f24ac24e3f9
   if (temperature < 0) {
     temperature = 0;
   }
@@ -102,14 +99,9 @@ void loop() {
   vin = vout / (R2 / (R1 + R2));
   vin = correctionfactor - vin;
   battery = map(vin, 3.2, vin, 0, 100);
-<<<<<<< HEAD
-  Serial.println("V:" + String(vin, 2));
-  Serial.println("battery:" + String(battery));
-=======
   
   //  Serial.println("V:" + String(vin, 2));
   //  Serial.println("battery:" + String(battery));
->>>>>>> 1aff345dbef6d03a4d8c792ed1734f24ac24e3f9
 
   String GPS_DATA = gps.GetPosition();
   String latitude = getValue(GPS_DATA, ',', 1);
