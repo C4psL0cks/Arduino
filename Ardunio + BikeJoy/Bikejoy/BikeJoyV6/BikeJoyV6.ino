@@ -138,6 +138,7 @@ void loop() {
     Serial.println("temperature : " + String(temperature));
     Serial.println("V:" + String(vin, 2));
     Serial.println("battery:" + String(battery));
+    Serial.println("runs:" + String(runs));
     Serial.println("-------------------------------------");
 
   } else {
@@ -148,55 +149,59 @@ void loop() {
     Serial.println("temperature : " + String(temperature));
     Serial.println("V:" + String(vin, 2));
     Serial.println("battery:" + String(battery));
+    Serial.println("runs:" + String(runs));
+    Serial.println("setinterval:" + String(setinterval));
+    Serial.println("delays:" + String(delays));
+    Serial.println("state:" + String(state));
     Serial.println("-------------------------------------");
   }
 
   if (runs == true) {
 
-    if (runs == true && around_state == false) {
-      around_state = true;
-      unsigned long currentMillis1 = millis();
-      if (currentMillis1 - previousMillis1 >= 60 * setinterval) {
-        if (int(firebase.connect()) == 1) {
-          states = firebase.get("bike/" + device + "/status/");
-          delay(100);
-          around_state = false;
-        }
-        firebase.close();
-        previousMillis1 = currentMillis1;
+    //    if (runs == true && around_state == false) {
+    //      around_state = true;
+    unsigned long currentMillis1 = millis();
+    if (currentMillis1 - previousMillis1 >= 60 * setinterval) {
+      if (int(firebase.connect()) == 1) {
+        states = firebase.get("bike/" + device + "/status/");
+        delay(100);
+        //          around_state = false;
       }
+      firebase.close();
+      previousMillis1 = currentMillis1;
     }
+    //    }
 
-    if (states == "true" && around_state == false) {
-      around_state = true;
-      unsigned long currentMillis2 = millis();
-      if (currentMillis2 - previousMillis2 >= 60 * setinterval) {
-        if (int(firebase.connect()) == 1) {
-          firebase.setStr("bike/" + device + "/location/latitude", latitude);
-          firebase.setStr("bike/" + device + "/location/longitude", longitude);
-          delay(50);
-          firebase.setInt("bike/" + device + "/battery", battery);
-          firebase.setFloat("bike/" + device + "/temperature", temperature);
-          delay(50);
-          around_state = false;
-        }
-        firebase.close();
-        previousMillis2 = currentMillis2;
+    //    if (states == "true" && around_state == false) {
+    //      around_state = true;
+    unsigned long currentMillis2 = millis();
+    if (currentMillis2 - previousMillis2 >= 60 * setinterval) {
+      if (int(firebase.connect()) == 1) {
+        firebase.setStr("bike/" + device + "/location/latitude", latitude);
+        firebase.setStr("bike/" + device + "/location/longitude", longitude);
+        delay(50);
+        firebase.setInt("bike/" + device + "/battery", battery);
+        firebase.setFloat("bike/" + device + "/temperature", temperature);
+        delay(50);
+        //          around_state = false;
       }
+      firebase.close();
+      previousMillis2 = currentMillis2;
     }
+    //    }
 
-    if (states == "true" && around_state == false) {
-      unsigned long currentMillis3 = millis();
-      if (currentMillis3 - previousMillis3 >= 60 * setinterval) {
-        if (int(firebase.connect()) == 1) {
-          sos = firebase.get("bike/" + device + "/sos/");
-          delay(100);
-          around_state = false;
-        }
-        firebase.close();
-        previousMillis3 = currentMillis3;
+    //    if (states == "true" && around_state == false) {
+    unsigned long currentMillis3 = millis();
+    if (currentMillis3 - previousMillis3 >= 60 * setinterval) {
+      if (int(firebase.connect()) == 1) {
+        sos = firebase.get("bike/" + device + "/sos/");
+        delay(100);
+        //          around_state = false;
       }
+      firebase.close();
+      previousMillis3 = currentMillis3;
     }
+    //    }
 
   }
 
