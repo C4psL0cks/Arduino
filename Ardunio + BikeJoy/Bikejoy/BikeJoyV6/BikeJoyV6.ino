@@ -152,19 +152,21 @@ void loop() {
     Serial.println("-------------------------------------");
   }
 
-  if (runs == true && around_state == false) {
-    around_state = true;
-    unsigned long currentMillis1 = millis();
-    if (currentMillis1 - previousMillis1 >= 60 * setinterval) {
-      if (int(firebase.connect()) == 1) {
-        states = firebase.get("bike/" + device + "/status/");
-        delay(100);
-        around_state = false;
-      }
-      firebase.close();
-      previousMillis1 = currentMillis1;
-    }
+  if (int(firebase.connect()) == 1) {
+    states = firebase.get("bike/" + device + "/status/");
+    // delay(100);
+    // around_state = false;
   }
+  firebase.close();
+
+  // if (runs == true && around_state == false) {
+  //   around_state = true;
+  //   unsigned long currentMillis1 = millis();
+  //   if (currentMillis1 - previousMillis1 >= 60 * setinterval) {
+     
+  //     previousMillis1 = currentMillis1;
+  //   }
+  // }
 
   if ((runs == "true") && (states == "true") && (around_state == false)) {
     around_state = true;
