@@ -36,8 +36,8 @@ int delays = 200;
 int setinterval = 50;
 float temperature = 0;
 
-String latitude = "-";
-String longitude = "-";
+String latitude = "";
+String longitude = "";
 String states = "";
 boolean around_state = false;
 boolean state = false;
@@ -91,7 +91,7 @@ void setup() {
   Serial.println(net.GetIP());
   gps.Start();
   Serial.println(F("GPS Start"));
-  delay(100);
+  delay(500);
 
   firebase.begin(FIREBASE_URL, FIREBASE_SECRET);
 
@@ -135,13 +135,9 @@ void loop() {
     runs = false;
     Serial.println("-------------------------------------");
     Serial.println("GPS Wait.....");
-    Serial.println("temperature : " + String(temperature));
-    Serial.println("V:" + String(vin, 2));
-    Serial.println("battery:" + String(battery));
-    Serial.println("runs:" + String(runs));
     Serial.println("-------------------------------------");
 
-  } else {
+  } else if (latitude != "" && longitude != "") {
     digitalWrite(GPS_STATUS, LOW);
     runs = true;
     Serial.println("-------------------------------------");
@@ -156,24 +152,22 @@ void loop() {
     Serial.println("-------------------------------------");
   }
 
-  if (runs == true) {
-
-    //    if (runs == true && around_state == false) {
-    //      around_state = true;
+  if (runs == true && around_state == false) {
+    around_state = true;
     unsigned long currentMillis1 = millis();
     if (currentMillis1 - previousMillis1 >= 60 * setinterval) {
       if (int(firebase.connect()) == 1) {
         states = firebase.get("bike/" + device + "/status/");
         delay(100);
-        //          around_state = false;
+        around_state = false;
       }
       firebase.close();
       previousMillis1 = currentMillis1;
     }
-    //    }
+  }
 
-    //    if (states == "true" && around_state == false) {
-    //      around_state = true;
+  if ((runs == "true") && (states == "true") && (around_state == false)) {
+    around_state = true;
     unsigned long currentMillis2 = millis();
     if (currentMillis2 - previousMillis2 >= 60 * setinterval) {
       if (int(firebase.connect()) == 1) {
@@ -183,54 +177,46 @@ void loop() {
         firebase.setInt("bike/" + device + "/battery", battery);
         firebase.setFloat("bike/" + device + "/temperature", temperature);
         delay(50);
-        //          around_state = false;
+        around_state = false;
       }
       firebase.close();
       previousMillis2 = currentMillis2;
     }
-    //    }
+  }
 
-    //    if (states == "true" && around_state == false) {
+  if (runs == "true" && (states == "true") && around_state == false) {
+    around_state = true;
     unsigned long currentMillis3 = millis();
     if (currentMillis3 - previousMillis3 >= 60 * setinterval) {
       if (int(firebase.connect()) == 1) {
         sos = firebase.get("bike/" + device + "/sos/");
         delay(100);
-        //          around_state = false;
+        around_state = false;
       }
       firebase.close();
       previousMillis3 = currentMillis3;
     }
-    //    }
-
   }
 
   if (states == "true") {
-
     Serial.println("No Alert");
     digitalWrite(UNLOCK, HIGH);
     digitalWrite(LEDSTATE, HIGH);
-
   } else if (states == "false") {
-
     Serial.println("Alert");
     digitalWrite(UNLOCK, LOW);
     digitalWrite(LEDSTATE, LOW);
-
   }
 
   if (sos == "true") {
-
     Serial.println("Alert");
     digitalWrite(UNLOCK, LOW);
     digitalWrite(LEDSTATE, LOW);
 
   } else if (sos == "false") {
-
     Serial.println("No Alert");
     digitalWrite(UNLOCK, HIGH);
     digitalWrite(LEDSTATE, HIGH);
-
   }
   delay(delays);
 }
