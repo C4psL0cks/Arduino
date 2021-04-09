@@ -114,6 +114,14 @@ void setup() {
 }
 void loop() {
 
+
+  if (int(firebase.connect()) == 1) {
+    states = firebase.get("bike/" + device + "/status/");
+    // delay(100);
+    // around_state = false;
+  }
+  firebase.close();
+
   sensors.requestTemperatures();
   temperature = sensors.getTempCByIndex(0);
   if (temperature < 0) {
@@ -129,6 +137,7 @@ void loop() {
   String GPS_DATA = gps.GetPosition();
   latitude = getValue(GPS_DATA, ',', 1);
   longitude = getValue(GPS_DATA, ',', 2);
+
 
   if (latitude == "" && longitude == "") {
     digitalWrite(GPS_STATUS, HIGH);
@@ -149,15 +158,12 @@ void loop() {
     Serial.println("setinterval:" + String(setinterval));
     Serial.println("delays:" + String(delays));
     Serial.println("state:" + String(state));
+    Serial.println("states:" + String(states));
+    Serial.println(GPS_DATA);
+    Serial.println("latitude : " + String(latitude));
+    Serial.println("longitude : " + String(longitude));
     Serial.println("-------------------------------------");
   }
-
-  if (int(firebase.connect()) == 1) {
-    states = firebase.get("bike/" + device + "/status/");
-    // delay(100);
-    // around_state = false;
-  }
-  firebase.close();
 
   // if (runs == true && around_state == false) {
   //   around_state = true;
