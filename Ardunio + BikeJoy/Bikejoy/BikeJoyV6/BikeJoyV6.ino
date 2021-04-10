@@ -72,17 +72,17 @@ void setup() {
   Serial.println(F("UC20"));
   gsm.PowerOn();
   while (gsm.WaitReady()) {}
-  Serial.print(F("GetOperator --> "));
+  //  Serial.print(F("GetOperator --> "));
   Serial.println(gsm.GetOperator());
-  Serial.print(F("SignalQuality --> "));
+  //  Serial.print(F("SignalQuality --> "));
   Serial.println(gsm.SignalQuality());
-  Serial.println(F("Disconnect net"));
+  //  Serial.println(F("Disconnect net"));
   net.DisConnect();
-  Serial.println(F("Set APN and Password"));
+  //  Serial.println(F("Set APN and Password"));
   net.Configure(APN, USER, PASS);
-  Serial.println(F("Connect net"));
+  //  Serial.println(F("Connect net"));
   net.Connect();
-  Serial.println(F("Show My IP"));
+  //  Serial.println(F("Show My IP"));
   Serial.println(net.GetIP());
 
   String ip = net.GetIP();
@@ -97,7 +97,7 @@ void setup() {
 
   firebase.begin(FIREBASE_URL, FIREBASE_SECRET);
   if (int(firebase.connect()) == 1) {
-    Serial.println(F("Firebase Start"));
+    //    Serial.println(F("Firebase Start"));
     setinterval = firebase.getInt("bike/setinterval/");
     delay(100);
   }
@@ -105,7 +105,7 @@ void setup() {
   previousMillis = millis();
 
   gps.Start();
-  Serial.println(F("GPS Start"));
+  //  Serial.println(F("GPS Start"));
   delay(100);
 }
 void loop() {
@@ -116,18 +116,18 @@ void loop() {
     setinterval = firebase.getInt("bike/setinterval/");
   }
   firebase.close();
-
-  Serial.println("-------------------------------------");
-  Serial.println("STATE : " + String(states));
-  Serial.println("Setinterval : " + String(setinterval));
-  Serial.println("battery : " + String(battery));
-  Serial.println("-------------------------------------");
+  //
+  //  Serial.println("-------------------------------------");
+  //  Serial.println("STATE : " + String(states));
+  //  Serial.println("Setinterval : " + String(setinterval));
+  //  Serial.println("battery : " + String(battery));
+  //  Serial.println("-------------------------------------");
 
   if (states == "true") {
-    Serial.println("No Alert");
+    //    Serial.println("No Alert");
     digitalWrite(UNLOCK, HIGH);
   } else if (states == "false") {
-    Serial.println("Alert");
+    //    Serial.println("Alert");
     digitalWrite(UNLOCK, LOW);
   }
 
@@ -150,11 +150,11 @@ void loop() {
     String latitude = getValue(GPS_DATA, ',', 1 );
     String longitude = getValue(GPS_DATA, ',', 2 );
 
-    Serial.println("-------------------------------------");
-    Serial.println("GPS Start....");
-    Serial.println("latitude : " + String(latitude));
-    Serial.println("longitude : " + String(longitude));
-    Serial.println("-------------------------------------");
+    //    Serial.println("-------------------------------------");
+    //    Serial.println("GPS Start....");
+    //    Serial.println("latitude : " + String(latitude));
+    //    Serial.println("longitude : " + String(longitude));
+    //    Serial.println("-------------------------------------");
 
     if (currentMillis - previousMillis >= 60 * setinterval)
     {
