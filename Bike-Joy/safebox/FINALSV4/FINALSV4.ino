@@ -77,8 +77,8 @@ String Version = "1.0.0";
 String SerialNumber = "00-00-00";
 String SafeBoxName = "Safe-Box";
 String SafeBoxPassword = "1234567890";
-String SafeBoxFIREBASE_URL = "gsms-1efb6.firebaseio.com";
-String SafeBoxFIREBASE_SECRET = "ZM8pIneWA7rbziI7J3kmyFelelZEEZ98hmgDfVjD";
+String SafeBoxFIREBASE_URL = "savebox-test.firebaseio.com";
+String SafeBoxFIREBASE_SECRET = "msswI7q0Znn76a391rINWLRjmtsE7bf9CK7euTWj";
 String SafeBoxDelay = "200";
 String SafeBoxFTPHost = "files.000webhost.com";
 String SafeBoxFTPUsername = "testerslogers";
@@ -631,6 +631,7 @@ void loop() {
     Serial.println("STATE RUN    : " + String(runs));
     Serial.println("----------------------------");
     Serial.println("MacAddress   : " + mac_address);
+    Serial.println("TemperatureC : " + String(temperatureC));
     Serial.println("Interrupt    : " + String(count_motion));
     Serial.println("MuteBuzzer   : " + String(mute_buzzer));
     Serial.println("ModeBuzzer   : " + String(mode_buzzer));
@@ -751,6 +752,7 @@ void loop() {
         Serial.println("Car stop case temperature On");
         Serial.println("****************************");
         if (int(firebase.connect()) == 1) {
+          firebase.setFloat("boxes/" + mac_address + "/Temperature", temperatureC);
           firebase.setFloat("boxes/" + mac_address + "/lastTemperature", 1);
           delay(100);
           around_state = false;
