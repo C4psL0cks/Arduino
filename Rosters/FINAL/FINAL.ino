@@ -101,46 +101,52 @@ void loop() {
     }
   }
 
-  if (counter == 0) {
-    M1 = 0;
-    M2 = 0;
-    Motor1(M1);
-    Motor2(M2);
-  }
+  //  if (counter == 0) {
+  //    M1 = 0;
+  //    M2 = 0;
+  //    Motor1(M1);
+  //    Motor2(M2);
+  //  }
+  //
+  //  if (counter == 1) {
+  //    M1 = 20;
+  //    M2 = 20;
+  //    Motor1(M1);
+  //    Motor2(M2);
+  //  }
+  //
+  //  if (counter == 2) {
+  //    M1 = 40;
+  //    M2 = 40;
+  //    Motor1(M1);
+  //    Motor2(M2);
+  //  }
+  //
+  //  if (counter == 3) {
+  //    M1 = 60;
+  //    M2 = 60;
+  //    Motor1(M1);
+  //    Motor2(M2);
+  //  }
+  //
+  //  if (counter == 4) {
+  //    M1 = 80;
+  //    M2 = 80;
+  //    Motor1(M1);
+  //    Motor2(M2);
+  //  }
+  //
+  //  if (counter == 5) {
+  //    M1 = 100;
+  //    M2 = 100;
+  //    Motor1(M1);
+  //    Motor2(M2);
+  //  }
 
-  if (counter == 1) {
-    M1 = 20;
-    M2 = 20;
-    Motor1(M1);
-    Motor2(M2);
-  }
-
-  if (counter == 2) {
-    M1 = 40;
-    M2 = 40;
-    Motor1(M1);
-    Motor2(M2);
-  }
-
-  if (counter == 3) {
-    M1 = 60;
-    M2 = 60;
-    Motor1(M1);
-    Motor2(M2);
-  }
-
-  if (counter == 4) {
-    M1 = 80;
-    M2 = 80;
-    Motor1(M1);
-    Motor2(M2);
-  }
-
-  if (counter == 5) {
-    M1 = 100;
-    M2 = 100;
-    Motor1(M1);
-    Motor2(M2);
+  for (int i = 80; i <= 100; i += 1) {
+    Motor1(i);
+    Serial.println("P1:" + String(i));
+    delay(1000);
   }
 
   Serial.println("TEMPS1 :" + String(S1.readCelsius()) + " C");
@@ -152,7 +158,7 @@ void loop() {
   Serial.println("P1:" + String(M1));
   Serial.println("P2:" + String(M2));
   Serial.println("*****************************************");
-  delay(1000);
+
 }
 
 
