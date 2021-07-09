@@ -5,8 +5,8 @@
 SocketIOClient client;
 
 byte mac[] = { 0xAA, 0x00, 0xBE, 0xEF, 0xFE, 0xEE };
-char hostname[] = "192.168.0.104/";
-int port = 3000;
+char hostname[] = "192.168.0.107";
+int port = 4001;
 
 extern String RID;
 extern String Rname;

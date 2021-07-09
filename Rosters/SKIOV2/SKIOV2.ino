@@ -13,12 +13,12 @@ void setup() {
   Serial.println("Starting...");
 
   // start the Ethernet connection:
-  while (Ethernet.begin(mac) != 1){
+  while (Ethernet.begin(mac) != 1) {
     Serial.print(".");
   }
   Serial.print("My IP :");
   Serial.println(Ethernet.localIP());
-  
+
   client.onOpen([](WebSocket & ws) {
     Serial.println(F("Type a message in the following format: <text>"));
     Serial.println(F("----------------------------------------------"));
@@ -34,7 +34,7 @@ void setup() {
     Serial.println(F("Disconnected"));
   });
 
-  if (!client.open("192.168.0.104", 3000)) {
+  if (!client.open("192.168.0.107", 4001)) {
     Serial.println(F("Connection failed!"));
     while (true)
       ;
